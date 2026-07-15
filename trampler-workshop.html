@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trampler Workshop — SAND: Raiders of Sophie Build Sharing</title>
+<style>
+:root{
+  --bg:#12100c; --bg2:#17140f; --panel:#1d1913; --panel2:#252017;
+  --line:#312a20; --line2:#453b2c;
+  --brass:#e8912b; --brass2:#f2a94b; --sand:#e6d9c2; --ink:#efe8da; --dim:#a2937c;
+  --red:#e05d4a; --green:#8fb56a; --blue:#5aa9d6;
+  --cell:44px; --r:8px;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+body{background:var(--bg); color:var(--ink); font-family:-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif; font-size:14px; line-height:1.5; min-height:100vh;}
+body::before{content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(ellipse at 50% -20%, rgba(232,145,43,.05), transparent 55%);}
+h1,h2,h3,h4{font-weight:700; letter-spacing:.02em;}
+.page-head{margin:6px 0 22px;}
+.page-head h2{font-size:22px; color:var(--ink); letter-spacing:-.01em;}
+.page-head p{color:var(--dim); font-size:13.5px; margin-top:2px; max-width:640px;}
+.auth-off{color:var(--dim); font-size:12px; letter-spacing:.04em;}
+.user-chip{color:var(--sand); font-size:13px; font-weight:600; padding:6px 10px; background:var(--panel2); border:1px solid var(--line); border-radius:20px;}
+.hd-right{display:flex; gap:8px; align-items:center; margin-left:auto;}
+.cloud-note{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--blue); border-radius:var(--r); padding:10px 14px; font-size:12.5px; color:var(--dim); margin-bottom:14px;}
+.auth-box{background:var(--bg2); border:1px solid var(--line2); border-radius:12px; max-width:380px; width:100%; padding:22px; box-shadow:0 24px 64px rgba(0,0,0,.6);}
+.auth-box h3{font-size:17px; margin-bottom:4px;}
+.auth-box .sub{color:var(--dim); font-size:12.5px; margin-bottom:14px;}
+.auth-box input{width:100%; margin-bottom:8px; padding:10px 12px; border-radius:6px; font-size:14px;}
+.auth-box .row2{display:flex; gap:8px; margin-top:6px;}
+.auth-box .row2 button{flex:1; padding:10px 0;}
+.au-msg{min-height:18px; font-size:12px; color:var(--brass2); margin-top:6px;}
+button{font-family:inherit; cursor:pointer;}
+input,select,textarea{font-family:inherit; background:var(--bg2); border:1px solid var(--line); color:var(--ink); padding:7px 10px; border-radius:3px; font-size:13px;}
+input:focus,select:focus,textarea:focus{outline:1px solid var(--brass);}
+::-webkit-scrollbar{width:10px;height:10px} ::-webkit-scrollbar-track{background:var(--bg2)} ::-webkit-scrollbar-thumb{background:var(--line2); border-radius:5px}
+
+/* ---------- header ---------- */
+header{position:sticky; top:0; z-index:50; background:rgba(18,16,12,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:0 20px; display:flex; align-items:center; gap:20px; height:60px;}
+.logo{display:flex; align-items:center; gap:11px;}
+.logo .mark{width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--brass),#b3641a); display:flex; align-items:center; justify-content:center; font-size:16px; color:#1a1206;}
+.logo .t1{font-size:15.5px; color:var(--ink); font-weight:700; letter-spacing:.01em; line-height:1.15;}
+.logo .t2{font-size:11px; color:var(--dim); line-height:1.15;}
+nav{display:flex; gap:2px; margin-left:12px;}
+nav button{background:none; border:none; color:var(--dim); padding:8px 14px; font-size:13.5px; font-weight:600; border-radius:6px;}
+nav button:hover{color:var(--sand); background:var(--panel);}
+nav button.active{color:var(--ink); background:var(--panel2);}
+.btn{background:var(--panel2); border:1px solid var(--line2); color:var(--sand); padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:600;}
+.btn:hover{border-color:var(--brass); color:var(--brass2);}
+.btn.primary{background:var(--brass); border-color:var(--brass); color:#1c1104; font-weight:700;}
+.btn.primary:hover{background:var(--brass2); filter:none;}
+.btn.danger{border-color:#7a4033; color:#e09383;}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+
+main{position:relative; z-index:1; padding:20px; max-width:1560px; margin:0 auto;}
+.page{display:none;} .page.visible{display:block;}
+
+/* ---------- browse ---------- */
+.browse-head{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
+.chips{display:flex; gap:6px; flex-wrap:wrap;}
+.chip{background:var(--panel); border:1px solid var(--line); color:var(--dim); padding:6px 14px; border-radius:20px; font-size:12.5px; font-weight:600;}
+.chip:hover{color:var(--sand); border-color:var(--line2);}
+.chip.active{background:var(--brass); color:#1c1104; border-color:var(--brass);}
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px;}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; cursor:pointer; transition:transform .15s, border-color .15s, box-shadow .15s;}
+.card:hover{transform:translateY(-3px); border-color:var(--line2); box-shadow:0 12px 32px rgba(0,0,0,.45);}
+.card .thumb{height:176px; background:#100e0a; display:flex; align-items:center; justify-content:center; border-bottom:1px solid var(--line); position:relative;}
+.card .thumb canvas{image-rendering:pixelated;}
+.card .cat-badge{position:absolute; top:8px; left:8px; background:rgba(20,15,10,.85); border:1px solid var(--line2); color:var(--brass2); font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:3px;}
+.card .body{padding:12px 14px;}
+.card h3{font-size:15px; color:var(--sand); margin-bottom:2px; letter-spacing:.05em;}
+.card .by{color:var(--dim); font-size:12px; margin-bottom:8px;}
+.card .meta{display:flex; gap:12px; font-size:12px; color:var(--dim); flex-wrap:wrap;}
+.stars{color:var(--brass2); font-size:13px; letter-spacing:2px;}
+.stars .off{color:#4a3b28;}
+.empty-note{color:var(--dim); padding:40px; text-align:center; font-style:italic;}
+
+/* ---------- editor layout ---------- */
+.editor{display:grid; grid-template-columns:264px 1fr 312px; gap:16px; align-items:start;}
+.panel{background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+.panel .ph{padding:10px 14px; border-bottom:1px solid var(--line); color:var(--dim); font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between; align-items:center;}
+
+/* palette */
+.pal-tabs{display:flex; flex-wrap:wrap; border-bottom:1px solid var(--line);}
+.pal-tabs button{flex:1 0 33%; background:none; border:none; border-bottom:2px solid transparent; color:var(--dim); font-size:10.5px; padding:8px 2px; letter-spacing:.03em; text-transform:uppercase;}
+.pal-tabs button.active{color:var(--brass2); border-bottom-color:var(--brass);}
+.pal-list{max-height:calc(100vh - 250px); overflow-y:auto; padding:8px;}
+.pal-item{display:flex; gap:10px; align-items:center; padding:7px 8px; border:1px solid transparent; border-radius:4px; cursor:pointer;}
+.pal-item:hover{background:var(--panel2); border-color:var(--line);}
+.pal-item.sel{background:#3d2f1c; border-color:var(--brass);}
+.pal-item.locked{opacity:.9;}
+.pal-item img{width:40px; height:40px; object-fit:contain; flex:none; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));}
+.pal-item .fallback-ic{width:40px; height:40px; flex:none; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#141009;}
+.pal-item .nm{font-size:12px; line-height:1.25;}
+.pal-item .sub{font-size:10.5px; color:var(--dim); display:flex; gap:8px; margin-top:2px;}
+.tier-b{display:inline-block; font-size:9.5px; padding:0 5px; border-radius:2px; background:#33414d; color:#a8c6da; border:1px solid #46586a;}
+.tier-b.t1{background:#2e3b28;color:#a9c78f;border-color:#465a3c} .tier-b.t3{background:#4d3a24;color:#e0b47c;border-color:#6a5232} .tier-b.t4{background:#4d2830;color:#dc909c;border-color:#6a3a46}
+
+/* canvas */
+.canvas-wrap{padding:14px; display:flex; flex-direction:column; gap:12px;}
+.build-bar{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.build-bar input[type=text]{width:230px;}
+.grid-zone{display:flex; gap:14px; justify-content:center; align-items:flex-start;}
+.layers{display:flex; flex-direction:column; gap:5px; align-items:center;}
+.layers .lbl{font-size:10px; color:var(--dim); letter-spacing:.1em; text-transform:uppercase; margin-bottom:2px;}
+.layers button{width:70px; padding:9px 0; background:var(--panel2); border:1px solid var(--line); color:var(--dim); font-size:11px; letter-spacing:.06em; border-radius:3px;}
+.layers button.active{background:#3d2f1c; color:var(--brass2); border-color:var(--brass);}
+.layers button .cnt{color:var(--dim); font-size:9.5px;}
+#grid{position:relative; background:#14100c; border:2px solid var(--line2); border-radius:4px; box-shadow:inset 0 0 40px rgba(0,0,0,.6), 0 6px 24px rgba(0,0,0,.4);}
+#grid .gline{position:absolute; background:rgba(201,150,60,.07); pointer-events:none;}
+#grid .chassis-foot{position:absolute; background:rgba(201,150,60,.10); border:1px dashed rgba(201,150,60,.45); pointer-events:none; border-radius:3px;}
+/* 3D module boxes */
+.mod{position:absolute; transform-style:preserve-3d; cursor:pointer;}
+.mod .face{position:absolute; pointer-events:none; backface-visibility:visible;}
+.mod .f-top{left:0; top:0; width:100%; height:100%; border:1px solid rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.mod .f-top .lb{font-size:9px; font-weight:700; letter-spacing:.07em; color:rgba(22,15,8,.9); text-transform:uppercase; text-align:center; line-height:1.15; padding:1px 2px; text-shadow:0 1px 0 rgba(255,255,255,.18); pointer-events:none;}
+.mod .f-front,.mod .f-right{border:1px solid rgba(0,0,0,.5);}
+.mod .ring{position:absolute; border-radius:50%; border:3px solid rgba(20,14,8,.55); background:rgba(0,0,0,.18); pointer-events:none;}
+.mod.sel-mod .f-top{outline:2px solid var(--brass2); outline-offset:1px;}
+.mod.preview{opacity:.7; pointer-events:none;}
+.mod.preview.bad .f-top{outline:2px solid var(--red); background-image:repeating-linear-gradient(45deg, rgba(198,91,72,.4) 0 6px, transparent 6px 12px)!important;}
+.hint{color:var(--dim); font-size:11.5px; text-align:center;}
+kbd{background:var(--panel2); border:1px solid var(--line2); border-radius:3px; padding:0 5px; font-size:10.5px; color:var(--sand);}
+
+/* stats */
+.stats-body{padding:12px; display:flex; flex-direction:column; gap:12px; max-height:calc(100vh - 160px); overflow-y:auto;}
+.check{display:flex; flex-direction:column; gap:5px;}
+.check .row{display:flex; gap:8px; align-items:center; font-size:12.5px;}
+.check .ok{color:var(--green);} .check .no{color:var(--red);} .check .warn-t{color:#d9a44a;}
+.statrow{display:flex; justify-content:space-between; font-size:12.5px; padding:3px 0; border-bottom:1px dotted #3a2f21;}
+.statrow b{color:var(--sand); font-weight:700;}
+.bar{height:8px; background:#14100c; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:4px 0 2px;}
+.bar i{display:block; height:100%; background:linear-gradient(90deg,#7da05a,#c9963c);}
+.bar i.over{background:linear-gradient(90deg,#c9963c,#c65b48);}
+.tech-list{display:flex; flex-direction:column; gap:4px;}
+.tech-item{display:flex; justify-content:space-between; align-items:center; background:var(--bg2); border:1px solid var(--line); border-radius:3px; padding:5px 8px; font-size:11.5px;}
+.sect-t{color:var(--brass2); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; border-bottom:1px solid var(--line); padding-bottom:4px;}
+.warns{display:flex; flex-direction:column; gap:4px; font-size:11.5px; color:#d9a44a;}
+
+/* detail modal */
+.overlay{position:fixed; inset:0; background:rgba(10,7,4,.8); z-index:100; display:none; align-items:flex-start; justify-content:center; overflow-y:auto; padding:30px 16px;}
+.overlay.visible{display:flex;}
+.detail{background:var(--bg2); border:1px solid var(--line2); border-radius:6px; max-width:1150px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.7);}
+.detail-head{display:flex; align-items:center; gap:14px; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+.detail-head h2{color:var(--sand); font-size:19px;}
+.detail-grid{display:grid; grid-template-columns:1fr 330px; gap:0;}
+.detail-left{padding:16px; border-right:1px solid var(--line);}
+.detail-right{padding:16px; display:flex; flex-direction:column; gap:14px; max-height:72vh; overflow-y:auto;}
+.close-x{margin-left:auto; background:none; border:1px solid var(--line); color:var(--dim); width:32px; height:32px; border-radius:3px; font-size:15px;}
+.close-x:hover{color:var(--red); border-color:var(--red);}
+.comment{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:8px 10px; font-size:12.5px;}
+.comment .ch{display:flex; justify-content:space-between; color:var(--dim); font-size:11px; margin-bottom:4px;}
+.comment .ch b{color:var(--brass2);}
+.rate-stars{font-size:22px; letter-spacing:4px; cursor:pointer; color:#4a3b28;}
+.rate-stars span:hover, .rate-stars span.lit{color:var(--brass2);}
+.viewer-layers{display:flex; gap:5px; margin-bottom:10px;}
+.viewer-layers button{padding:5px 12px; font-size:11px; background:var(--panel2); border:1px solid var(--line); color:var(--dim); border-radius:3px;}
+.viewer-layers button.active{color:var(--brass2); border-color:var(--brass); background:#3d2f1c;}
+
+/* about */
+.about{max-width:820px; line-height:1.65; color:#cfc0a8;}
+.about h2{color:var(--sand); margin:22px 0 8px; font-size:16px;}
+.about a{color:var(--brass2);}
+.about ul{margin:8px 0 8px 22px;}
+.note{background:var(--panel); border-left:3px solid var(--brass); padding:10px 14px; border-radius:0 4px 4px 0; margin:12px 0; font-size:13px;}
+
+.toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#3d2f1c; border:1px solid var(--brass); color:var(--brass2); padding:10px 22px; border-radius:4px; z-index:200; display:none; font-size:13px; letter-spacing:.04em; box-shadow:0 8px 24px rgba(0,0,0,.6);}
+
+/* ---------- isometric view ---------- */
+.iso-host{position:relative; margin:0 auto; overflow:visible;}
+.iso-scene{position:absolute; left:50%; top:52%; transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateX(55deg) rotateZ(45deg);}
+.iso-scene.flat{transform:translate(-50%,-50%);}
+.plane{position:absolute; left:0; top:0; width:100%; height:100%; transform-style:preserve-3d;}
+.plane.base{background:#14100c; border:2px solid var(--line2); border-radius:4px; box-shadow:inset 0 0 40px rgba(0,0,0,.6);}
+.plane.dim-below{opacity:.5;} .plane.dim-below .mod{pointer-events:none;}
+.plane.dim-above{opacity:.16;} .plane.dim-above .mod{pointer-events:none;}
+.iso-scene.flat .plane.dim-above{display:none;}
+.plane.active-plane{outline:1px dashed rgba(201,150,60,.35); outline-offset:2px;}
+.plane .picker{position:absolute; inset:0; z-index:30;}
+.door{position:absolute; background:linear-gradient(180deg,var(--brass2),#9c7326); border:1px solid rgba(60,40,10,.8); border-radius:1px; box-shadow:0 0 6px rgba(232,184,98,.75); pointer-events:none;}
+.mod.bad-mod .f-top{outline:2px solid var(--red); background-image:repeating-linear-gradient(45deg, rgba(198,91,72,.35) 0 6px, transparent 6px 12px)!important;}
+.legend{display:flex; flex-wrap:wrap; gap:4px 14px; justify-content:center; padding-top:2px;}
+.legend .lg{display:flex; gap:5px; align-items:center; font-size:10px; color:var(--dim); text-transform:uppercase; letter-spacing:.07em;}
+.legend .lg i{width:11px; height:11px; border-radius:2px; display:block; border:1px solid rgba(0,0,0,.5);}
+#grid.gl{width:100%; min-height:560px;}
+#grid canvas, #d-grid canvas{display:block; margin:0 auto; border-radius:4px;}
+.t3tip{position:absolute; pointer-events:none; background:rgba(24,17,10,.92); border:1px solid var(--brass); color:var(--sand); font-size:11.5px; padding:4px 8px; border-radius:3px; z-index:40; display:none; white-space:nowrap; letter-spacing:.03em;}
+.hole-cell{position:absolute; background:repeating-linear-gradient(45deg, rgba(0,0,0,.55) 0 6px, rgba(198,91,72,.12) 6px 12px); border:1px dashed rgba(198,91,72,.5); pointer-events:none; z-index:2;}
+.reason-line{min-height:17px; text-align:center; font-size:12px; color:var(--red); letter-spacing:.03em;}
+.reason-line.ok{color:var(--green);}
+.view-toggle{display:flex; border:1px solid var(--line2); border-radius:3px; overflow:hidden;}
+.view-toggle button{background:var(--panel2); border:none; color:var(--dim); padding:8px 12px; font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;}
+.view-toggle button.active{background:#3d2f1c; color:var(--brass2);}
+
+/* ---------- in-game builder chrome ---------- */
+:root{ --orange:#e8912b; --orange2:#f2a94b; --uiblue:#4aa3d8; }
+#vp-wrap{position:relative; flex:1; min-width:0;}
+.floorsel{display:flex; flex-direction:column; gap:4px; align-items:center;}
+.floorsel .fkey{width:30px; height:24px; background:#111; border:1px solid #555; border-radius:3px; color:#ddd; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.floorsel .fl{width:30px; height:30px; background:rgba(10,10,10,.85); border:1px solid #444; border-radius:3px; color:#999; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.floorsel .fl.active{color:#111; background:var(--orange); border-color:var(--orange2);}
+.keybar{display:flex; gap:16px; justify-content:center; align-items:center; padding:6px 0 0; flex-wrap:wrap; color:#cfc4b2; font-size:11.5px;}
+.keybar b{display:inline-flex; min-width:18px; height:18px; padding:0 4px; margin-right:5px; background:#e9e4d8; color:#1a1510; border-radius:3px; font-size:10.5px; align-items:center; justify-content:center; box-shadow:0 1px 0 #888;}
+.vp-check{position:absolute; right:12px; bottom:12px; width:250px; display:flex; flex-direction:column; gap:5px; z-index:35;}
+.vp-sec{background:rgba(12,10,8,.92); border:1px solid #3d3225; border-radius:3px; overflow:hidden;}
+.vp-sec .vs-h{display:flex; justify-content:space-between; align-items:center; padding:6px 10px; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; cursor:pointer;}
+.vp-sec .vs-h .cnt{font-weight:700;}
+.vp-sec.core .vs-h{color:var(--uiblue);} .vp-sec.rel .vs-h{color:var(--orange);}
+.vp-sec .vs-b{display:none; padding:4px 10px 8px; font-size:11.5px; color:#cfc4b2;}
+.vp-sec.open .vs-b{display:block;}
+.vp-sec .vs-b .row{display:flex; gap:7px; padding:2px 0; align-items:center;}
+.save-exit{background:linear-gradient(180deg,var(--orange2),#c26f14); border:1px solid #f7bd6b; color:#1c1104; font-weight:800; letter-spacing:.12em; text-transform:uppercase; padding:11px 0; border-radius:3px; font-size:13px; box-shadow:0 3px 10px rgba(0,0,0,.5);}
+.save-exit:hover{filter:brightness(1.1);}
+.vp-card{position:absolute; left:12px; top:52px; width:250px; background:rgba(12,10,8,.94); border:1px solid #3d3225; border-radius:4px; z-index:35; display:none; overflow:hidden;}
+.vp-card .pc-h{background:linear-gradient(180deg,#2a5673,#1d3d54); padding:7px 10px; border-bottom:1px solid #0e2333;}
+.vp-card .pc-cat{font-size:9.5px; color:#9cc8e8; letter-spacing:.12em; text-transform:uppercase;}
+.vp-card .pc-n{font-size:13px; color:#fff; font-weight:700; letter-spacing:.03em;}
+.vp-card .pc-b{padding:8px 10px; font-size:11px; color:#cfc4b2;}
+.vp-card .pc-dim{color:#9a8a70; margin-bottom:6px;}
+.vp-card .pcstat{display:flex; align-items:center; gap:6px; padding:1.5px 0;}
+.vp-card .pcstat span{width:88px; text-align:right; color:#9a8a70;}
+.vp-card .pcstat i{flex:1; height:7px; background:#26201731; border:1px solid #3a3226; border-radius:2px; overflow:hidden; display:block;}
+.vp-card .pcstat i b{display:block; height:100%; background:#e9e4d8;}
+.vp-card .pc-cost{margin-top:6px; padding-top:5px; border-top:1px dotted #3a3226; color:#cfc4b2;}
+.floor-hint{position:absolute; left:12px; top:12px; background:rgba(12,10,8,.85); border:1px solid #3d3225; color:#cfc4b2; font-size:10.5px; letter-spacing:.1em; padding:4px 10px; border-radius:3px; z-index:35; text-transform:uppercase;}
+.bp-name{display:flex; align-items:center; gap:8px; background:linear-gradient(180deg,#2a2119,#1d1712); border:1px solid #3d3225; border-radius:3px; padding:7px 10px; margin-bottom:8px;}
+.bp-name .nm{flex:1; color:#f2e9d8; font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.bp-name button{background:none; border:none; color:var(--orange); font-size:14px;}
+.gstat{padding:2px 0 6px;}
+.gstat .gs-r{display:flex; justify-content:space-between; font-size:11.5px; color:#d8cdbb; padding:1px 0;}
+.gstat .gs-bar{height:5px; background:#171310; border:1px solid #33291c; border-radius:2px; overflow:hidden; margin-bottom:5px;}
+.gstat .gs-bar b{display:block; height:100%; background:linear-gradient(90deg,#b96f16,var(--orange));}
+.gstat .gs-bar b.red{background:linear-gradient(90deg,#8f2f22,#d24534);}
+.cgrid{display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:8px 0;}
+.cgrid .cg{display:flex; gap:8px; align-items:center; background:#171310; border:1px solid #2e2519; border-radius:3px; padding:5px 8px; font-size:11px; color:#cfc4b2;}
+.cgrid .cg b{color:#fff; font-size:13px;}
+.editor.pal-hidden{grid-template-columns:0 1fr 312px;}
+.editor.pal-hidden .panel:first-child{visibility:hidden; overflow:hidden;}
+.tab-handle{position:absolute; left:-2px; top:40%; z-index:36; background:rgba(12,10,8,.9); border:1px solid #3d3225; color:var(--orange); writing-mode:vertical-rl; text-orientation:mixed; font-size:10px; letter-spacing:.18em; text-transform:uppercase; padding:12px 4px; border-radius:0 4px 4px 0; cursor:pointer;}
+
+@media (max-width:1100px){ .editor{grid-template-columns:1fr;} .detail-grid{grid-template-columns:1fr;} .detail-left{border-right:none;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="mark">⬢</span><div><div class="t1">Trampler Workshop</div><div class="t2">SAND: Raiders of Sophie · community builds</div></div></div>
+  <nav>
+    <button id="nav-browse" class="active" onclick="showPage('browse')">Builds</button>
+    <button id="nav-editor" onclick="showPage('editor')">Editor</button>
+    <button id="nav-about" onclick="showPage('about')">About</button>
+  </nav>
+  <div class="hd-right">
+    <div id="auth-area"></div>
+    <button class="btn" onclick="promptImport()">Import code</button>
+    <button class="btn primary" onclick="newBuild()">+ New build</button>
+  </div>
+</header>
+
+<main>
+  <!-- BROWSE -->
+  <section id="page-browse" class="page visible">
+    <div class="page-head">
+      <h2>Trampler Builds</h2>
+      <p>Rebuild your walker in the blueprint editor, check legality against the in-game rules, then share it with a build code — or publish it to the community.</p>
+    </div>
+    <div id="cloud-note"></div>
+    <div class="browse-head">
+      <div class="chips" id="src-chips" style="margin-right:10px"></div>
+      <div class="chips" id="cat-chips"></div>
+      <select id="sort-sel" onchange="renderBrowse()" style="margin-left:auto">
+        <option value="rating">Top rated</option>
+        <option value="new">Newest</option>
+        <option value="comments">Most discussed</option>
+        <option value="cost">Cheapest first</option>
+      </select>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- EDITOR -->
+  <section id="page-editor" class="page">
+    <div class="editor">
+      <div class="panel">
+        <div class="ph">Parts Library <span id="pal-count" style="color:var(--dim)"></span></div>
+        <div class="pal-tabs" id="pal-tabs"></div>
+        <div style="padding:8px 8px 0"><input type="text" id="pal-search" placeholder="Search parts…" style="width:100%" oninput="renderPalette()"></div>
+        <div class="pal-list" id="pal-list"></div>
+      </div>
+
+      <div class="panel">
+        <div class="ph">Blueprint Editor <span id="ed-mode" style="color:var(--dim)"></span></div>
+        <div class="canvas-wrap">
+          <div class="build-bar">
+            <input type="text" id="b-name" placeholder="Blueprint name…">
+            <select id="b-cat"></select>
+            <div class="view-toggle"><button id="vt-iso" class="active" onclick="setView('iso')">⬦ Iso</button><button id="vt-top" onclick="setView('top')">▦ Top</button></div>
+            <button class="btn" onclick="rotCam(-1)" title="Rotate camera left (Q)">⟲</button>
+            <button class="btn" onclick="rotCam(1)" title="Rotate camera right (E)">⟳</button>
+            <button class="btn primary" id="btn-guides" onclick="toggleGuides()" title="Toggle door & orientation guides">🚪 Guides</button>
+            <button class="btn" onclick="rotateSel()" title="Rotate (R)">⟳ Rotate</button>
+            <button class="btn danger" onclick="deleteSel()" title="Delete (X / Del)">✕ Remove</button>
+            <button class="btn danger" onclick="clearLayer()">Clear deck</button>
+            <span style="flex:1"></span>
+            <button class="btn" onclick="shareCurrent()">⇪ Share code</button>
+            <button class="btn" onclick="publishCurrent()" title="Upload this build to the community (account required)">☁ Publish</button>
+            <button class="btn primary" onclick="saveCurrent()">💾 Save build</button>
+          </div>
+          <div class="grid-zone">
+            <div class="layers floorsel" id="layer-btns"></div>
+            <div id="vp-wrap">
+              <div id="grid"></div>
+              <div class="floor-hint" id="floor-hint">Floor 1</div>
+              <button class="tab-handle" onclick="togglePalette()">Compartments · Tab</button>
+              <div class="vp-card" id="vp-card"></div>
+              <div class="vp-check" id="vp-check"></div>
+            </div>
+          </div>
+          <div class="reason-line" id="reason-line"></div>
+          <div class="keybar"><span><b>X</b>Delete</span><span><b>C</b>Copy</span><span><b>Z</b>Undo</span><span><b>Y</b>Redo</span><span><b>Q</b>Rotate camera left</span><span><b>E</b>Rotate camera right</span><span><b>R</b>Floor up</span><span><b>F</b>Floor down</span><span><b>T</b>Rotate part</span><span><b>G</b>Toggle upper layers</span><span><b>WASD</b>Move camera</span></div>
+          <div class="legend" id="legend"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph">Statistics &amp; Requirements</div>
+        <div class="stats-body" id="stats-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="page-about" class="page">
+    <div class="about" id="about-body"></div>
+  </section>
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="overlay">
+  <div class="detail">
+    <div class="detail-head">
+      <h2 id="d-name"></h2>
+      <span class="cat-badge" id="d-cat" style="position:static"></span>
+      <span class="stars" id="d-stars"></span>
+      <span style="color:var(--dim);font-size:12px" id="d-by"></span>
+      <button class="btn" onclick="cloneToEditor()">✎ Open in editor</button>
+      <button class="btn" onclick="shareDetail()">⇪ Copy code</button>
+      <button class="close-x" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-left">
+        <div class="viewer-layers" id="d-layers"></div>
+        <div style="display:flex;justify-content:center"><div id="d-grid" style="position:relative;background:#14100c;border:2px solid var(--line2);border-radius:4px;"></div></div>
+      </div>
+      <div class="detail-right">
+        <div>
+          <div class="sect-t">Build stats</div>
+          <div id="d-stats"></div>
+        </div>
+        <div>
+          <div class="sect-t">Required tech tree research</div>
+          <div class="tech-list" id="d-tech" style="margin-top:6px"></div>
+        </div>
+        <div>
+          <div class="sect-t">Rate this build</div>
+          <div class="rate-stars" id="rate-stars"></div>
+        </div>
+        <div>
+          <div class="sect-t">Comments (<span id="d-ccount">0</span>)</div>
+          <div id="d-comments" style="display:flex;flex-direction:column;gap:6px;margin-top:6px"></div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+            <input type="text" id="c-name" placeholder="Your raider name">
+            <textarea id="c-text" rows="2" placeholder="Share your thoughts on this build…"></textarea>
+            <button class="btn" onclick="postComment()">Post comment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="auth-ov">
+  <div class="auth-box">
+    <h3 id="au-title">Sign in</h3>
+    <div class="sub">Create an account to publish builds, rate and comment. Local building works without one.</div>
+    <input type="text" id="au-name" placeholder="Username (for sign up)">
+    <input type="email" id="au-email" placeholder="Email">
+    <input type="password" id="au-pass" placeholder="Password (min. 6 characters)">
+    <div class="row2">
+      <button class="btn primary" onclick="doAuth('in')">Sign in</button>
+      <button class="btn" onclick="doAuth('up')">Create account</button>
+    </div>
+    <div class="au-msg" id="au-msg"></div>
+    <div style="text-align:right;margin-top:8px"><button class="btn" onclick="closeAuth()">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================= DATA ============================= */
+const ICON_BASE = 'https://probonk.com/game/sand/icons/';
+const GRID_W = 10, GRID_H = 10, LAYERS = 3;
+const BUILD_CATS = ['Solo','3-Player','6-Player','Loot Hauler','PvP','Storm Dive','Budget'];
+const CAT_COLORS = {chassis:'#7d6b4d', reactor:'#d28c2f', engine:'#b3612e', steering:'#5b87a3', captain:'#c9a03a', crew:'#74a457', cargo:'#a98e54', turret:'#bd5240', structure:'#75757c', armor:'#8b98a6', utility:'#8f6fae'};
+const CAT_LABEL = {chassis:'Chassis', reactor:'Reactor', engine:'Engines', steering:'Steering', captain:'Captain', crew:'Crew', cargo:'Cargo', turret:'Combat', structure:'Decks & Frames', armor:'Armor', utility:'Utility'};
+/* Parts tabs match the in-game builder: Chassis / Essentials / Decks & Frames / Combat / Utility */
+const PAL_TABS = [
+  {id:'chassis', label:'Chassis', cats:['chassis']},
+  {id:'essent', label:'Essentials', cats:['reactor','steering','captain','crew','engine'], ids:['u_vest','u_fort','u_veststrs']},
+  {id:'struct', label:'Decks & Frames', cats:['structure']},
+  {id:'combat', label:'Combat', cats:['turret','armor']},
+  {id:'util', label:'Utility', cats:['cargo'], ids:['u_wb','u_wsc','u_ws']}
+];
+// Module fields: i=id, n=name, c=category, w/h=footprint, ic=icon file (probonk), t=research tier,
+// nd=research node, wt=weight, hp=hitpoints(0=indestructible), e=energy use, pow=rated power,
+// cap=weight capacity, crew=crew slots, capn=captain, slots=item slots, ent=entrance, spd=speed bonus
+const MODS = [
+// ---- CHASSIS ----
+{i:'ch_77bl',n:'S&H Atm.Fs 77B-L Small Chassis',c:'chassis',w:2,h:4,ic:'walker-comp-chassis-small-long4-metal-2x3.webp',t:1,nd:'I(a). Small Chassis',wt:1,hp:0,e:2,cap:16000},
+{i:'ch_77bq',n:'S&H Atm.Fs 77B-Q Small Chassis',c:'chassis',w:3,h:3,ic:'walker-comp-chassis-small4-metal-3x3.webp',t:1,nd:'I(a). Small Chassis',wt:1,hp:0,e:3,cap:20000},
+{i:'ch_83ul',n:'S&H Atm.Fs 83U-L Middling Chassis',c:'chassis',w:3,h:4,ic:'walker-comp-chassis-long4-metal-3x4.webp',t:2,nd:'II(b). Middling Chassis',wt:1,hp:0,e:4,cap:28000},
+{i:'ch_83ub',n:'S&H Atm.Fs 83U-B Middling Chassis',c:'chassis',w:4,h:3,ic:'walker-comp-chassis-wide4-metal-4x3.webp',t:2,nd:'II(b). Middling Chassis',wt:1,hp:0,e:4,cap:28000},
+{i:'ch_79hl',n:'S&H Atm.Fs 79H-L Great Chassis',c:'chassis',w:3,h:5,ic:'walker-comp-chassis-long6-metal-3x5.webp',t:3,nd:'III(a). Great Chassis',wt:1,hp:0,e:5,cap:36000},
+{i:'ch_79hb',n:'S&H Atm.Fs 79H-B Great Chassis',c:'chassis',w:5,h:3,ic:'walker-comp-chassis-wide4-metal-5x3.webp',t:3,nd:'III(a). Great Chassis',wt:1,hp:0,e:5,cap:36000},
+{i:'ch_79hq',n:'S&H Atm.Fs 79H-Q Great Chassis',c:'chassis',w:4,h:4,ic:'walker-comp-chassis-medium4-metal-4x4.webp',t:3,nd:'III(a). Great Chassis',wt:1,hp:0,e:6,cap:40000},
+{i:'ch_kfwell',n:'KF-Q "Well" Small Chassis',c:'chassis',w:3,h:3,ic:'walker-comp-chassis-small4-metal-hole-3x3.webp',t:2,nd:'KF I. Hollow Frames',wt:1,hp:0,e:3,cap:18000},
+{i:'ch_kfholeL',n:'KF-L "Hole" Middling Chassis',c:'chassis',w:3,h:4,ic:'walker-comp-chassis-long4-metal-hole-3x4.webp',t:2,nd:'KF I. Hollow Frames',wt:1,hp:0,e:4,cap:26000},
+{i:'ch_kfholeB',n:'KF-B "Hole" Middling Chassis',c:'chassis',w:4,h:3,ic:'walker-comp-chassis-wide4-metal-hole-4x3.webp',t:2,nd:'KF I. Hollow Frames',wt:1,hp:0,e:4,cap:26000},
+{i:'ch_kftrL',n:'KF-L "Trench" Great Chassis',c:'chassis',w:3,h:5,ic:'walker-comp-chassis-long6-metal-hole-3x5.webp',t:3,nd:'KF II. Trench Frames',wt:1,hp:0,e:5,cap:34000},
+{i:'ch_kftrB',n:'KF-B "Trench" Great Chassis',c:'chassis',w:5,h:3,ic:'walker-comp-chassis-wide4-metal-hole-5x3.webp',t:3,nd:'KF II. Trench Frames',wt:1,hp:0,e:5,cap:34000},
+{i:'ch_kftrQ',n:'KF-Q "Trench" Great Chassis',c:'chassis',w:4,h:4,ic:'walker-comp-chassis-medium4-metal-hole-4x4.webp',t:3,nd:'KF II. Trench Frames',wt:1,hp:0,e:6,cap:38000},
+{i:'ch_kfabL',n:'KF-L "Abyss" Royal Chassis',c:'chassis',w:4,h:6,ic:'walker-comp-chassis-long8-metal-hole-4x6.webp',t:4,nd:'KF III. Abyss Frames',wt:1,hp:0,e:8,cap:56000},
+{i:'ch_kfabQ',n:'KF-Q "Abyss" Royal Chassis',c:'chassis',w:5,h:5,ic:'walker-comp-chassis-large6-metal-hole-5x5.webp',t:4,nd:'KF III. Abyss Frames',wt:1,hp:0,e:8,cap:60000},
+{i:'ch_albrecht',n:'S.Trs "Albrecht" Royal Chassis',c:'chassis',w:5,h:5,ic:'walker-comp-chassis-large6-metal-5x5.webp',t:4,nd:'IV(a). Royal Chassis',wt:1,hp:0,e:8,cap:64000},
+{i:'ch_karl',n:'S.Trs "Karl Ludvig" Royal Chassis',c:'chassis',w:4,h:6,ic:'walker-comp-chassis-long8-metal-4x6.webp',t:4,nd:'IV(a). Royal Chassis',wt:1,hp:0,e:8,cap:60000},
+// ---- REACTORS ----
+{i:'r_80l',n:'NZ AzE80 Motor-Reactor, Covered (1x3)',c:'reactor',w:1,h:3,ic:'walker-comp-reactor-long-wood-1x3.webp',t:1,nd:"Godlewski's Expedition",wt:4500,hp:8000,pow:60},
+// Round reactors PLACE as 2x1 (see icon filenames "2x1") — the boiler drum overhangs a 2x1 clearance
+// row behind that must stay free of modules but MAY overhang the chassis edge (per in-game behaviour).
+{i:'r_80r',n:'NZ AzE80 Motor-Reactor, Covered (2x2)',c:'reactor',w:2,h:1,clr:{x:0,y:1,w:2,h:1},ic:'walker-comp-reactor-round-wood-2x1.webp',t:2,nd:'II(a). Motor-Reactor',wt:3500,hp:9500,pow:75},
+{i:'r_81',n:'NZ AzE81 Motor-Reactor, Armored (2x2)',c:'reactor',w:2,h:1,clr:{x:0,y:1,w:2,h:1},ic:'walker-comp-reactor-round-metal-2x1.webp',t:2,nd:'II(a). Motor-Reactor',wt:5200,hp:10000,pow:85},
+{i:'r_81ld',n:'NZ AzE81L Deck Motor-Reactor, Rounded',c:'reactor',w:2,h:1,clr:{x:0,y:1,w:2,h:1},ic:'walker-comp-reactor-round-open-2x1.webp',t:2,nd:'II(a). Motor-Reactor',wt:4200,hp:6500,pow:80},
+{i:'r_81sd',n:'NZ AzE81S Deck Motor-Reactor, Long',c:'reactor',w:1,h:3,ic:'walker-comp-reactor-long-open-1x3.webp',t:2,nd:'II(a). Motor-Reactor',wt:4200,hp:6500,pow:80},
+{i:'r_81sf',n:'NZ AzE81S Motor-Reactor, Framed Long',c:'reactor',w:1,h:3,ic:'walker-comp-reactor-long-framed-1x3.webp',t:2,nd:'II(a). Motor-Reactor',wt:4600,hp:7500,pow:80},
+{i:'r_82',n:'NZ AzE82 Motor-Reactor, Armored (1x3)',c:'reactor',w:1,h:3,ic:'walker-comp-reactor-long-metal-1x3.webp',t:3,nd:'III(b). Motor-Reactor',wt:5500,hp:12500,pow:100},
+// ---- ENGINES ----
+{i:'e_mb2k',n:'NZ Mb2k Maneuver Engine, Small',c:'engine',w:1,h:1,ic:'walker-comp-engine-small-metal-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:800,hp:1800,e:5,spd:0.5},
+{i:'e_mb3',n:'NZ Mb3 Maneuver Engine, Medium',c:'engine',w:1,h:2,ic:'walker-comp-engine-medium-metal-1x2.webp',t:2,nd:'II(e). Maneuver Engines',wt:1500,hp:2600,e:9,spd:1.1},
+// (Cruising Accelerator exists in the files but is flagged "Disabled / unused" in-game — excluded)
+// ---- STEERING ----
+{i:'s_m78k',n:'S&H M78k Flybridge',c:'steering',w:1,h:1,ic:'walker-comp-steering-square-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:1000,hp:1800,e:2},
+{i:'s_m78l',n:'S&H M78l Flybridge',c:'steering',w:1,h:2,ic:'walker-comp-steering-long-open-1x2.webp',t:1,nd:"Godlewski's Expedition",wt:1400,hp:2200,e:2},
+{i:'s_m78r',n:'S&H M78r Flybridge',c:'steering',w:2,h:1,ic:'walker-comp-steering-round-open-2x1.webp',t:1,nd:"Godlewski's Expedition",wt:1400,hp:2200,e:2},
+{i:'s_m78kf',n:'S&H M78k Framed Steering Deck',c:'steering',w:1,h:1,ic:'walker-comp-steering-square-framed-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:1300,hp:2600,e:2},
+{i:'s_m78f',n:'S&H M78 Framed Steering Deck',c:'steering',w:1,h:2,ic:'walker-comp-steering-long-framed-1x2.webp',t:2,nd:'II(c). Framed Structures',wt:1700,hp:3000,e:2},
+{i:'s_m78rf',n:'S&H M78r Framed Steering Deck',c:'steering',w:2,h:1,ic:'walker-comp-steering-round-framed-2x1.webp',t:2,nd:'II(c). Framed Structures',wt:1700,hp:3000,e:2},
+{i:'s_kormylo',n:'KF "Kormylo" Wheelhouse',c:'steering',w:1,h:2,ic:'walker-comp-steering-long-wood-1x2.webp',t:3,nd:'KF II. Trench Frames',wt:1900,hp:3400,e:2},
+{i:'s_k81v',n:'S.Trs K81v Pilot Bridge',c:'steering',w:1,h:2,ic:'walker-comp-steering-long-metal-1x2.webp',t:3,nd:'III(e). Armored Compartments',wt:2000,hp:3600,e:2},
+{i:'s_k82v',n:'S.Trs K82v Pilot Bridge',c:'steering',w:2,h:1,ic:'walker-comp-steering-round-metal-2x1.webp',t:3,nd:'III(e). Armored Compartments',wt:2000,hp:3600,e:2},
+// ---- CAPTAIN ----
+{i:'cap_sh',n:"S&H Captain's Cabin",c:'captain',w:1,h:1,ic:'walker-comp-captain-crew-wood-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:1600,hp:2500,e:3,capn:1},
+{i:'cap_strs',n:"S.Trs Captain's Cabin",c:'captain',w:1,h:1,ic:'walker-comp-captain-crew-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:2200,hp:4000,e:3,capn:1},
+// ---- CREW ----
+{i:'cr_mk1',n:'S&H MK1 Crew Cabin, Single',c:'crew',w:1,h:1,ic:'walker-comp-crew-small-wood-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:900,hp:2500,e:2,crew:1},
+{i:'cr_mk2',n:'S&H MK2 Crew Cabin, 2 People',c:'crew',w:1,h:2,ic:'walker-comp-crew-medium-wood-1x2.webp',t:1,nd:"Godlewski's Expedition",wt:1500,hp:2500,e:3,crew:2},
+{i:'cr_mk4',n:'S&H MK4 Crew Cabin, 4 People',c:'crew',w:2,h:2,ic:'walker-comp-crew-large-wood-2x2.webp',t:2,nd:'II(f). Extended Quarters',wt:2800,hp:3500,e:5,crew:4},
+{i:'cr_mb75',n:'S.Trs MB75 Crew Cabin, Single',c:'crew',w:1,h:1,ic:'walker-comp-crew-small-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:1400,hp:4000,e:2,crew:1},
+{i:'cr_k81v',n:'S.Trs K81v Crew Cabin, 2 People',c:'crew',w:1,h:2,ic:'walker-comp-crew-medium-metal-1x2.webp',t:3,nd:'III(e). Armored Compartments',wt:2100,hp:4000,e:3,crew:2},
+{i:'cr_mb77e',n:'S.Trs MB77e Crew Cabin, 4 People',c:'crew',w:2,h:2,ic:'walker-comp-crew-large-metal-2x2.webp',t:3,nd:'III(e). Armored Compartments',wt:3600,hp:5000,e:5,crew:4},
+// (NZ MAk-2 Medical Bay is flagged "Disabled / unused" in-game — excluded)
+// ---- CARGO ----
+{i:'cg_s',n:'S&H Cargo Compartment, Small',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-p-wood-1x1.webp',t:2,nd:'II(d). Cargo Hold',wt:1500,hp:2500,slots:144},
+{i:'cg_sl',n:'S&H Cargo Compartment, Small L-Shape',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-l-wood-1x1.webp',t:2,nd:'II(d). Cargo Hold',wt:1400,hp:2500,slots:120},
+{i:'cg_m',n:'S&H Cargo Compartment, Medium',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-m-wood-1x1.webp',t:2,nd:'II(d). Cargo Hold',wt:1700,hp:2500,slots:192},
+{i:'cg_bp',n:'S&H Cargo Bay, Parallel',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-p-wood-1x2.webp',t:2,nd:'II(d). Cargo Hold',wt:2400,hp:3000,slots:288},
+{i:'cg_bl',n:'S&H Cargo Bay, L-Shape',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-l-wood-1x2.webp',t:2,nd:'II(d). Cargo Hold',wt:2300,hp:3000,slots:240},
+{i:'cg_bu',n:'S&H Cargo Bay, U-Shape',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-u-wood-1x2.webp',t:2,nd:'II(d). Cargo Hold',wt:2400,hp:3000,slots:264},
+{i:'cg_dk',n:'S&H Cargo Deck',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-p-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:900,hp:1400,slots:96},
+{i:'cg_dkl',n:'S&H Cargo Deck, Light',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-single-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:600,hp:1100,slots:48},
+{i:'cg_dkf',n:'S&H Cargo Deck, Framed',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-p-frame-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:1200,hp:2200,slots:96},
+{i:'cg_ms',n:'S.Trs Cargo Compartment, Small',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-p-metal-1x1.webp',t:3,nd:'III(c). Armored Cargo',wt:2000,hp:4000,slots:144},
+{i:'cg_mm',n:'S.Trs Cargo Compartment, Medium',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-m-metal-1x1.webp',t:3,nd:'III(c). Armored Cargo',wt:2200,hp:4000,slots:192},
+{i:'cg_mbp',n:'S.Trs Cargo Bay, Parallel',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-p-metal-1x2.webp',t:3,nd:'III(c). Armored Cargo',wt:3200,hp:5000,slots:288},
+{i:'cg_mbu',n:'S.Trs Cargo Bay, U-Shape',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-u-metal-1x2.webp',t:3,nd:'III(c). Armored Cargo',wt:3200,hp:5000,slots:264},
+{i:'cg_mbl',n:'S.Trs Cargo Bay, L-Shape',c:'cargo',w:1,h:2,ic:'walker-comp-cargo-large-l-metal-1x2.webp',t:3,nd:'III(c). Armored Cargo',wt:3100,hp:5000,slots:240},
+{i:'cg_msl',n:'S.Trs Cargo Compartment, Small L-Shape',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-l-metal-1x1.webp',t:3,nd:'III(c). Armored Cargo',wt:1900,hp:4000,slots:120},
+{i:'cg_dkls',n:'S&H Cargo Deck, L-Shape',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-l-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:850,hp:1300,slots:80},
+{i:'cg_dkfl',n:'S&H Cargo Deck, Framed L-Shape',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-l-frame-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:1150,hp:2200,slots:80},
+{i:'cg_dkfs',n:'S&H Cargo Deck, Framed Light',c:'cargo',w:1,h:1,ic:'walker-comp-cargo-small-single-frame-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:900,hp:1800,slots:48},
+// ---- TURRET DECKS & COMBAT ----
+{i:'t_std',n:'S.Trs Turret Deck',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-open-1x1.webp',t:1,nd:'K.K. Landwehr',wt:1200,hp:2000,turret:1},
+{i:'t_corner',n:'S.Trs Turret Deck, Corner',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-open-corner-1x1.webp',t:1,nd:'K.K. Landwehr',wt:1200,hp:2000,turret:1},
+{i:'t_wide',n:'S.Trs Wide Turret Deck',c:'turret',w:2,h:1,ic:'walker-comp-weapon-turret-slot-open-2x1.webp',t:2,nd:'K.K. Landwehr II',wt:2200,hp:3000,turret:1},
+{i:'t_arm',n:'S.Trs Armored Turret Deck',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-metal-open-1x1.webp',t:2,nd:'K.K. Landwehr II',wt:1800,hp:3500,turret:1},
+{i:'t_armc',n:'S.Trs Armored Turret Deck, Corner',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-metal-corner-1x1.webp',t:2,nd:'K.K. Landwehr II',wt:1800,hp:3500,turret:1},
+{i:'t_armw',n:'S.Trs Wide Armored Turret Deck',c:'turret',w:2,h:1,ic:'walker-comp-weapon-turret-slot-open-metal-2x1.webp',t:3,nd:'K.K. Landwehr III',wt:2800,hp:4500,turret:1},
+{i:'t_nest',n:'KF "Nest" Framed Turret Deck',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-frame-1x1.webp',t:2,nd:'KF Siege Works',wt:1600,hp:3000,turret:1},
+{i:'t_nesta',n:'KF "Nest" Framed Armored Turret Deck',c:'turret',w:1,h:1,ic:'walker-comp-deck-turret-slot-frame-cmetal-1x1.webp',t:3,nd:'KF Siege Works',wt:2100,hp:4200,turret:1},
+{i:'t_casemate',n:'SGOW Universal Casemate',c:'turret',w:1,h:1,ic:'walker-comp-weapon-turret-slot-metal-1x1.webp',t:3,nd:'SGOW Casemate Works',wt:2400,hp:4800,turret:1},
+{i:'t_ram',n:'KF "Prolomnyk" Battering Ram',c:'turret',w:2,h:2,ic:'walker-comp-weapon-battle-ram-2x2.webp',t:3,nd:'KF Siege Works',wt:4200,hp:6500},
+{i:'t_embr',n:'S.Trs M78v Embrasure',c:'turret',w:1,h:1,ic:'walker-comp-special-embrasure-metal-1x1.webp',t:2,nd:'K.K. Landwehr II',wt:1300,hp:3200},
+// ---- ARMOR ----
+{i:'a_ha',n:'S.Trs HA Armor Plate',c:'armor',w:1,h:1,ic:'walker-comp-armor-spot-metal-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:900,hp:3000},
+{i:'a_has',n:'S.Trs HAs Framed Armor Plate',c:'armor',w:1,h:1,ic:'walker-comp-armor-framed-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:1100,hp:3800},
+{i:'a_hasr',n:'S.Trs HAs-R Framed Armor Plate',c:'armor',w:1,h:1,ic:'walker-comp-armor-framed-reverse-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:1100,hp:3800},
+// ---- STRUCTURE & DECKS ----
+{i:'d_std',n:'S&H Deck, Standard',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:300,hp:800},
+{i:'d_stdnr',n:'S&H Deck, Standard (no railings)',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-open-no-railings-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:260,hp:800},
+{i:'d_round',n:'S&H Deck, Round (1x1)',c:'structure',w:1,h:1,ic:'walker-comp-deck-round-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:300,hp:800},
+{i:'d_round2',n:'S&H Deck, Round (2x1)',c:'structure',w:2,h:1,ic:'walker-comp-deck-round-open-2x1.webp',t:1,nd:"Godlewski's Expedition",wt:550,hp:1200},
+{i:'d_bev',n:'S&H Deck, Beveled (1x1)',c:'structure',w:1,h:1,ic:'walker-comp-deck-beveled-straight-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:280,hp:800},
+{i:'d_bev2',n:'S&H Deck, Beveled (1x2)',c:'structure',w:1,h:2,ic:'walker-comp-deck-beveled-straight-open-1x2.webp',t:1,nd:"Godlewski's Expedition",wt:520,hp:1200},
+{i:'d_rbev',n:'S&H Deck, Round-Beveled',c:'structure',w:2,h:1,ic:'walker-comp-deck-beveled-round-open-2x1.webp',t:1,nd:"Godlewski's Expedition",wt:560,hp:1200},
+{i:'d_canopy',n:'S&H Canopy Deck',c:'structure',w:1,h:1,clr:{x:0,y:1,w:1,h:1},ic:'walker-comp-deck-square-canopy-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:700,hp:1600},
+{i:'d_arm',n:'S.Trs Armored Deck',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-h-armored-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:700,hp:2000},
+{i:'d_armnr',n:'S.Trs Armored Deck (no railings)',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-armored-no-railings-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:650,hp:2000},
+{i:'f_sup',n:'S&H Supporting Frame',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-frame-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:420,hp:1500,frame:1},
+{i:'f_supt',n:'S&H Supporting Frame, Triangle',c:'structure',w:1,h:1,ic:'walker-comp-deck-triangle-frame-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:380,hp:1300,frame:1},
+{i:'f_arm',n:'S.Trs Armored Frame',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-frame-armored-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:780,hp:2600,frame:1},
+{i:'f_armt',n:'S.Trs Armored Frame, Triangle',c:'structure',w:1,h:1,ic:'walker-comp-deck-triangle-frame-armored-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:700,hp:2300,frame:1},
+{i:'f_low',n:'S&H Lower Supporting Frame',c:'structure',w:1,h:1,ic:'walker-comp-structure-support-frame-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:420,hp:1500,frame:1},
+{i:'f_lowl',n:'S&H Lower Supporting Frame Ext. (L)',c:'structure',w:1,h:2,ic:'walker-comp-structure-support-extended-left-1x2.webp',t:2,nd:'II(c). Framed Structures',wt:760,hp:2200,frame:1},
+{i:'f_lowr',n:'S&H Lower Supporting Frame Ext. (R)',c:'structure',w:1,h:2,ic:'walker-comp-structure-support-extended-right-1x2.webp',t:2,nd:'II(c). Framed Structures',wt:760,hp:2200,frame:1},
+{i:'f_lowlr',n:'S&H Lower Supporting Frame Ext. (L&R)',c:'structure',w:1,h:3,ic:'walker-comp-structure-support-extended-full-1x3.webp',t:2,nd:'II(c). Framed Structures',wt:1100,hp:2900,frame:1},
+{i:'f_lcl',n:'S&H Lower Corner Supporting Frame (L)',c:'structure',w:1,h:1,ic:'walker-comp-structure-support-triangle-frame-left-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:400,hp:1400,frame:1},
+{i:'f_lcr',n:'S&H Lower Corner Supporting Frame (R)',c:'structure',w:1,h:1,ic:'walker-comp-structure-support-triangle-frame-right-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:400,hp:1400,frame:1},
+{i:'st_frm',n:'S&H Framed Stairs',c:'structure',w:1,h:1,ic:'walker-comp-deck-square-frame-stairs-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:450,hp:1400,stairs:1},
+{i:'st_ml',n:'S&H Mounted Stairs, Left',c:'structure',w:1,h:1,ic:'walker-comp-balcony-stairs-left-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:350,hp:1000,stairs:1},
+{i:'st_mr',n:'S&H Mounted Stairs, Right',c:'structure',w:1,h:1,ic:'walker-comp-balcony-stairs-right-open-1x2.webp',t:1,nd:"Godlewski's Expedition",wt:350,hp:1000,stairs:1},
+{i:'b_std',n:'S&H Standard Balcony',c:'structure',w:1,h:1,ic:'walker-comp-balcony-middle-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:280,hp:900},
+{i:'b_l',n:'S&H Balcony, Extended Left',c:'structure',w:2,h:1,ic:'walker-comp-balcony-left-open-2x1.webp',t:1,nd:"Godlewski's Expedition",wt:520,hp:1300},
+{i:'b_r',n:'S&H Balcony, Extended Right',c:'structure',w:2,h:1,ic:'walker-comp-balcony-right-open-2x1.webp',t:1,nd:"Godlewski's Expedition",wt:520,hp:1300},
+{i:'b_lr',n:'S&H Balcony, Extended L&R',c:'structure',w:3,h:1,ic:'walker-comp-balcony-full-open-3x1.webp',t:1,nd:"Godlewski's Expedition",wt:760,hp:1700},
+{i:'b_bridge',n:'S&H Bridge Balcony',c:'structure',w:1,h:1,ic:'walker-comp-balcony-bridge-open-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:300,hp:900},
+{i:'b_icl',n:'S&H Balcony, Inner Corner (L)',c:'structure',w:1,h:1,ic:'walker-comp-balcony-inner-corner-open-left-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:300,hp:900},
+{i:'b_icr',n:'S&H Balcony, Inner Corner (R)',c:'structure',w:1,h:1,ic:'walker-comp-balcony-inner-corner-open-right-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:300,hp:900},
+{i:'b_astd',n:'S.Trs Armored Balcony',c:'structure',w:1,h:1,ic:'walker-comp-balcony-middle-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:520,hp:2000},
+{i:'b_alr',n:'S.Trs Armored Balcony, Extended L&R',c:'structure',w:3,h:1,ic:'walker-comp-balcony-full-metal-3x1.webp',t:3,nd:'III(e). Armored Compartments',wt:1300,hp:3400},
+{i:'b_aicl',n:'S.Trs Armored Balcony, Inner Corner (L)',c:'structure',w:1,h:1,ic:'walker-comp-balcony-inner-corner-metal-left-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:540,hp:2000},
+{i:'b_aicr',n:'S.Trs Armored Balcony, Inner Corner (R)',c:'structure',w:1,h:1,ic:'walker-comp-balcony-inner-corner-metal-right-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:540,hp:2000},
+{i:'c_sh',n:'S&H Auxiliary Corridor',c:'structure',w:1,h:1,ic:'walker-comp-corridor-small-wood-1x1.webp',t:1,nd:"Godlewski's Expedition",wt:500,hp:1400},
+{i:'c_strs',n:'S.Trs Auxiliary Corridor',c:'structure',w:1,h:1,ic:'walker-comp-corridor-small-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:800,hp:2600},
+// ---- UTILITY ----
+// (S&H Entrance Area is flagged "Disabled / unused" in-game — the three vestibule entrances below are the real ones)
+{i:'u_vest',n:'S&H Entrance Vestibule',c:'utility',w:1,h:1,ic:'walker-comp-special-entry-wood-1x1.webp',t:1,nd:"Land I. Wooden Vestibule",wt:1200,hp:2000,ent:1},
+{i:'u_fort',n:'S&H Fortified Entrance Area',c:'utility',w:1,h:1,ic:'walker-comp-special-entry-frame-1x1.webp',t:2,nd:'II(c). Framed Structures',wt:1500,hp:2800,ent:1},
+{i:'u_veststrs',n:'S.Trs Entrance Vestibule',c:'utility',w:1,h:1,ic:'walker-comp-special-entry-metal-1x1.webp',t:3,nd:'III(e). Armored Compartments',wt:1800,hp:3600,ent:1},
+{i:'u_wb',n:'S&H Armaments Workbench',c:'utility',w:1,h:1,ic:'walker-comp-crafting-open-1x1.webp',t:2,nd:'II(h). Armaments Workshop',wt:1100,hp:1800,craft:1},
+{i:'u_wsc',n:'S&H Compact Armaments Workshop',c:'utility',w:1,h:1,ic:'walker-comp-crafting-small-wood-1x1.webp',t:2,nd:'II(h). Armaments Workshop',wt:1500,hp:2400,craft:1},
+{i:'u_ws',n:'S&H Armaments Workshop',c:'utility',w:1,h:2,ic:'walker-comp-crafting-wood-2x1.webp',t:3,nd:'III(f). Production Lines',wt:2400,hp:3200,craft:1}
+];
+const MODIX = Object.fromEntries(MODS.map(m=>[m.i,m]));
+
+/* ---- seed builds ---- */
+function P(m,x,y,l,r){ return {m,x,y,l,r:r||0}; }
+const SEED_BUILDS = [
+{
+  id:'seed3', name:'Iron Dreadnought', cat:'3-Player', author:'Workshop Team', created:'2026-07-10',
+  desc:'Current-meta heavy brawler for a 3-stack, based on the community "Iron Dreadnought" archetype: the armored AzE82 reactor is buried on the flank behind an embrasure, crew and captain sit in armored S.Trs compartments, cargo is armored against boarders, and the roof carries four armored turret decks with clear firing arcs. Weight sits just under the Great-chassis limit — do not add plate without dropping cargo.',
+  chassis:'ch_79hq', cx:3, cy:3,
+  mods:[ P('r_82',3,3,1,1), P('cg_ms',6,3,1), P('s_k81v',3,4,1), P('cr_k81v',4,4,1), P('cr_mb75',5,4,1), P('cg_ms',6,4,1),
+         P('cap_strs',5,5,1), P('cg_ms',6,5,1), P('t_embr',3,6,1), P('u_fort',4,6,1), P('t_arm',5,6,1), P('t_armc',6,6,1),
+         P('t_arm',3,3,2), P('t_arm',6,3,2), P('t_armc',3,6,2), P('t_armc',6,6,2), P('d_arm',4,3,2), P('d_arm',5,3,2), P('a_ha',4,6,2), P('a_ha',5,6,2) ],
+  ratings:[5], comments:[
+    {by:'Workshop Team',at:'2026-07-10',tx:'Reference build. Weight is right at the edge of the chassis rating — if you want more plate, switch to the KF Trench chassis and drop a cargo box.'}]
+}
+];
+
+/* ============================= STATE ============================= */
+const LS_KEY='tw_builds_v4', LS_USER='tw_username', LS_RATED='tw_rated_v1';
+let builds=[], cur=null, edLayer=1, palTab='chassis', palSel=null, selIdx=-1, previewRot=0, detailId=null, dLayer=1, viewMode='iso';
+const ZSTEP=40;
+function setView(v){ viewMode=v;
+  document.getElementById('vt-iso').classList.toggle('active',v==='iso');
+  document.getElementById('vt-top').classList.toggle('active',v==='top');
+  if(typeof T3!=='undefined'&&T3.ok&&edView){ edView.pitch=(v==='top')?1.47:0.615; edView.updateCam(); edView.render(); return; }
+  renderEditor(); }
+
+function loadBuilds(){
+  try{ const raw=localStorage.getItem(LS_KEY); if(raw){ builds=JSON.parse(raw); } }catch(e){}
+  if(!builds.length){ builds=JSON.parse(JSON.stringify(SEED_BUILDS)); }
+  // sanitize: drop parts that no longer exist in the game data (e.g. disabled modules)
+  builds.forEach(b=>{ b.mods=(b.mods||[]).filter(p=>MODIX[p.m]); if(!MODIX[b.chassis])b.chassis=null; });
+  persist();
+}
+function persist(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(builds)); }catch(e){} }
+function getRated(){ try{ return JSON.parse(localStorage.getItem(LS_RATED)||'{}'); }catch(e){ return {}; } }
+
+/* ============================= HELPERS ============================= */
+function effWH(m,r){ return (r%2===1)?[m.h,m.w]:[m.w,m.h]; }
+function cellsOf(p){ const m=MODIX[p.m]; const [w,h]=effWH(m,p.r||0); const out=[]; for(let dx=0;dx<w;dx++)for(let dy=0;dy<h;dy++)out.push([p.x+dx,p.y+dy]); return out; }
+function collides(build,p,ignoreIdx){ const cs=cellsOf(p); return build.mods.some((q,qi)=>{ if(qi===ignoreIdx||q.l!==p.l)return false; const qs=cellsOf(q); return cs.some(([a,b])=>qs.some(([c,d])=>a===c&&b===d)); }); }
+function inGrid(p){ const m=MODIX[p.m]; const [w,h]=effWH(m,p.r||0); return p.x>=0&&p.y>=0&&p.x+w<=GRID_W&&p.y+h<=GRID_H; }
+
+/* ---- placement legality (mirrors in-game editor rules) ---- */
+function pclass(m){
+  if(m.c==='chassis')return 'chassis';
+  if(m.c==='engine')return 'engine';
+  if(m.c==='armor')return 'armor';
+  if(m.i==='t_ram')return 'ram';
+  if(m.i==='u_entry')return 'entry';
+  if(m.i==='u_vest')return 'vest';
+  if(m.i==='u_fort'||m.i==='u_veststrs')return 'entry2';
+  if(m.i==='st_ml'||m.i==='st_mr')return 'extstairs';
+  if(m.c==='structure'&&m.i.startsWith('b_'))return 'balcony';
+  return 'interior';
+}
+const NONWALK=['engine','armor','ram'];
+function chFoot(b){ if(!b.chassis)return null; const ch=MODIX[b.chassis]; return {x:b.cx,y:b.cy,w:ch.w,h:ch.h,hole:ch.ic.includes('-hole-')}; }
+function holeCells(b){ const f=chFoot(b); if(!f||!f.hole)return []; const out=[];
+  for(let x=f.x+1;x<f.x+f.w-1;x++)for(let y=f.y+1;y<f.y+f.h-1;y++)out.push(x+','+y); return out; }
+function inFoot(f,x,y){ return f&&x>=f.x&&x<f.x+f.w&&y>=f.y&&y<f.y+f.h; }
+const DIRS=[[1,0],[-1,0],[0,1],[0,-1]];
+// clearance cells (e.g. reactor drum overhang): rotate with the module, may leave grid/chassis
+function clrCellsOf(p){ const m=MODIX[p.m]; if(!m||!m.clr)return []; const r=(p.r||0)%4, out=[];
+  for(let dx=0;dx<m.clr.w;dx++)for(let dy=0;dy<m.clr.h;dy++){
+    const x=m.clr.x+dx, y=m.clr.y+dy; let rx,ry;
+    if(r===0){rx=x;ry=y;} else if(r===1){rx=m.h-1-y;ry=x;} else if(r===2){rx=m.w-1-x;ry=m.h-1-y;} else {rx=y;ry=m.w-1-x;}
+    out.push([p.x+rx,p.y+ry]);
+  } return out; }
+function validatePlacement(b,p,ignore){
+  ignore=(ignore===undefined)?-1:ignore;
+  const m=MODIX[p.m]; if(m.c==='chassis')return null;
+  if(!inGrid(p))return 'Outside the build area';
+  if(collides(b,p,ignore))return 'Cells occupied';
+  { // clearance zones must stay free (they may overhang the chassis edge)
+    const myCells=cellsOf(p), myClr=clrCellsOf(p);
+    for(let qi=0;qi<b.mods.length;qi++){ if(qi===ignore)continue; const q=b.mods[qi]; if(q.l!==p.l)continue;
+      const qc=cellsOf(q), qClr=clrCellsOf(q);
+      if(myCells.some(([a,c])=>qClr.some(([e,f])=>e===a&&f===c)))return 'Blocked by the clearance zone of '+MODIX[q.m].n;
+      if(myClr.length&&myClr.some(([a,c])=>qc.some(([e,f])=>e===a&&f===c)||qClr.some(([e,f])=>e===a&&f===c)))return 'The overhang clearance must stay free';
+    }
+  }
+  const f=chFoot(b); if(!f)return 'Place a chassis first';
+  const cls=pclass(m), cells=cellsOf(p), holes=new Set(holeCells(b));
+  const onHole=cells.some(([x,y])=>holes.has(x+','+y));
+  const allInside=cells.every(([x,y])=>inFoot(f,x,y));
+  const allOutside=cells.every(([x,y])=>!inFoot(f,x,y));
+  const onPerimeter=cells.some(([x,y])=>inFoot(f,x,y)&&(x===f.x||y===f.y||x===f.x+f.w-1||y===f.y+f.h-1));
+  const touchFoot=cells.some(([x,y])=>DIRS.some(([dx,dy])=>inFoot(f,x+dx,y+dy)));
+  const supported = p.l===1 || cells.every(([x,y])=>b.mods.some((q,qi)=>qi!==ignore&&q.l===p.l-1
+    &&pclass(MODIX[q.m])!=='balcony'&&cellsOf(q).some(([a,c])=>a===x&&c===y)));
+  const adjSame = cells.some(([x,y])=>DIRS.some(([dx,dy])=>b.mods.some((q,qi)=>qi!==ignore&&q.l===p.l
+    &&cellsOf(q).some(([a,c])=>a===x+dx&&c===y+dy))));
+  // one-per-Trampler build rules
+  const cnt=c=>b.mods.filter((q,qi)=>qi!==ignore&&MODIX[q.m].c===c).length;
+  if(m.c==='reactor'&&cnt('reactor')>=1)return 'Build rules: only 1 Motor-Reactor per Trampler';
+  if(m.c==='steering'&&cnt('steering')>=1)return 'Build rules: only 1 steering compartment per Trampler';
+  if(m.c==='captain'&&cnt('captain')>=1)return "Build rules: only 1 Captain's Compartment per Trampler";
+  if(m.crew&&b.mods.filter((q,qi)=>qi!==ignore&&MODIX[q.m].crew).length>=3)return 'Build rules: max 3 crew compartments per Trampler';
+  switch(cls){
+    case 'interior':
+      if(p.l===1){ if(!allInside)return 'Interior compartments must sit on the chassis';
+        if(onHole)return 'Cannot build over the open chassis section'; }
+      else if(!supported)return 'No support underneath — needs a compartment or frame below every cell';
+      break;
+    case 'entry': case 'entry2': {
+      // entrances overlap the hull: on an edge cell, hanging outside over the frame, or in the open section.
+      // A boarding ladder always leads down from them.
+      if(p.l!==1)return 'Entrances must be on deck 1';
+      const allHole=cells.length>0&&cells.every(([x,y])=>holes.has(x+','+y));
+      const onEdgeCell=allInside&&onPerimeter&&!onHole;
+      const overhang=allOutside&&touchFoot;
+      if(!onEdgeCell&&!overhang&&!allHole)return 'Entrances overlap the hull edge (ladder down) or sit in the open chassis section';
+      break; }
+    case 'vest':
+      if(p.l!==1)return 'Vestibules must be on deck 1';
+      if(!(cells.length>0&&cells.every(([x,y])=>holes.has(x+','+y))))return 'Wooden Vestibule hangs into the open central section — needs a KF Well/Hole/Trench/Abyss chassis';
+      break;
+    case 'engine':
+      if(p.l!==1)return 'Engines mount on deck 1';
+      if(!allInside||!onPerimeter)return 'Engines must sit on the outer edge of the chassis';
+      if(onHole)return 'Cannot build over the open chassis section';
+      break;
+    case 'ram':
+      if(p.l!==1)return 'The battering ram mounts on deck 1';
+      if(!allOutside||!touchFoot)return 'Ram mounts outside the hull, touching the chassis edge';
+      break;
+    case 'armor':
+      if(p.l===1){ if(!adjSame&&!allInside&&!touchFoot)return 'Armor must attach to the hull or a compartment';
+        if(onHole)return 'Cannot build over the open chassis section'; }
+      else if(!supported&&!adjSame)return 'Armor needs a compartment to attach to';
+      break;
+    case 'balcony': case 'extstairs':
+      if(!allOutside)return 'Balconies attach outside the hull outline';
+      if(p.l===1?!touchFoot:!adjSame)return 'Balcony must attach to the chassis edge or an adjacent compartment';
+      if(cls==='extstairs'){
+        const adjFrame=cells.some(([x,y])=>DIRS.some(([dx,dy])=>b.mods.some((q,qi)=>{
+          if(qi===ignore||q.l!==p.l)return false; const qm=MODIX[q.m];
+          const okType=qm.frame||pclass(qm)==='balcony'||/Framed/i.test(qm.n);
+          return okType&&cellsOf(q).some(([a,c])=>a===x+dx&&c===y+dy); })));
+        if(!adjFrame)return 'Balcony stairs need an adjacent framed compartment or balcony (shows red in-game otherwise)';
+      }
+      break;
+  }
+  return null;
+}
+function validateAll(b){ const map=new Map();
+  b.mods.forEach((p,i)=>{ const r=validatePlacement(b,p,i); if(r)map.set(i,r); }); return map; }
+function turretObstructions(b){ // in-game: keep turret decks free of obstructions above
+  const out=[];
+  b.mods.forEach((p,i)=>{ const m=MODIX[p.m];
+    if(!m.turret)return;
+    const blocked=cellsOf(p).some(([x,y])=>b.mods.some(q=>q.l===p.l+1&&cellsOf(q).some(([a,c])=>a===x&&c===y)));
+    if(blocked)out.push(i);
+  });
+  return out;
+}
+/* ---- door / access graph: doors are added automatically between connected compartments ---- */
+function connectivity(b){
+  const walk=b.mods.map((p,i)=>({p,i,m:MODIX[p.m]})).filter(o=>!NONWALK.includes(pclass(o.m)));
+  const cellMap={};
+  walk.forEach(o=>cellsOf(o.p).forEach(([x,y])=>cellMap[o.p.l+':'+x+','+y]=o.i));
+  const adj={}; walk.forEach(o=>adj[o.i]=new Set());
+  walk.forEach(o=>cellsOf(o.p).forEach(([x,y])=>{
+    [[1,0],[0,1]].forEach(([dx,dy])=>{ const n=cellMap[o.p.l+':'+(x+dx)+','+(y+dy)];
+      if(n!==undefined&&n!==o.i){ adj[o.i].add(n); adj[n].add(o.i); } });
+    const up=cellMap[(o.p.l+1)+':'+x+','+y]; // ladders connect decks automatically
+    if(up!==undefined&&up!==o.i){ adj[o.i].add(up); adj[up].add(o.i); }
+  }));
+  const starts=walk.filter(o=>['entry','entry2','vest'].includes(pclass(o.m))).map(o=>o.i);
+  const seen=new Set(starts); const st=[...starts];
+  while(st.length){ const c=st.pop(); adj[c].forEach(n=>{ if(!seen.has(n)){ seen.add(n); st.push(n); } }); }
+  return { total:walk.length, reach:seen.size, hasEntry:starts.length>0,
+           unreachable:walk.filter(o=>!seen.has(o.i)).map(o=>o.i) };
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display='none',2600); }
+function fmt(n){ return n.toLocaleString('en-US'); }
+function abbrev(m){ return m.n.split(/[\s,]+/).filter(w=>/^[A-Z0-9"]/.test(w)).slice(0,2).map(w=>w.replace(/"/g,'')[0]).join('')||m.n.slice(0,2).toUpperCase(); }
+
+/* ---- 3D box visual language (no game images: procedural iso boxes) ---- */
+function shade(hex,f){ const n=parseInt(hex.slice(1),16);
+  const r=Math.min(255,Math.round(((n>>16)&255)*f)), g=Math.min(255,Math.round(((n>>8)&255)*f)), b=Math.min(255,Math.round((n&255)*f));
+  return `rgb(${r},${g},${b})`; }
+function modH(m){
+  switch(m.c){
+    case 'reactor': return 32;
+    case 'engine': return 16;
+    case 'steering': case 'captain': return 26;
+    case 'crew': return m.i==='u_medical'?26:26;
+    case 'cargo': return m.i.startsWith('cg_dk')?12:24;
+    case 'turret': return m.i==='t_ram'?18:(m.i==='t_embr'?22:10);
+    case 'armor': return 24;
+    case 'utility': return (m.i==='u_wb'||m.i==='u_ws'||m.i==='u_wsc')?22:26;
+    case 'structure': return (m.i==='c_sh'||m.i==='c_strs')?22:8;
+  }
+  return 14;
+}
+function modLabel(m){
+  switch(m.c){
+    case 'reactor': return 'REACTOR';
+    case 'engine': return m.i==='e_cruise'?'CRUISE':'ENGINE';
+    case 'steering': return 'BRIDGE';
+    case 'captain': return 'CAPTAIN';
+    case 'crew': return m.i==='u_medical'?'MEDIC':'CREW '+(m.crew||'');
+    case 'cargo': return m.i.startsWith('cg_dk')?'CARGO DK':'CARGO';
+    case 'turret': return m.i==='t_ram'?'RAM':(m.i==='t_embr'?'EMBRASURE':'TURRET');
+    case 'armor': return 'ARMOR';
+    case 'utility': { const c=pclass(m); return c==='vest'?'VESTIBULE':(c==='entry'||c==='entry2'?'ENTRY':'CRAFT'); }
+    case 'structure':
+      if(m.stairs)return 'STAIRS';
+      if(m.frame)return 'FRAME';
+      if(m.i.startsWith('b_'))return 'BALCONY';
+      if(m.i.startsWith('c_'))return 'CORRIDOR';
+      return 'DECK';
+  }
+  return m.n.slice(0,6).toUpperCase();
+}
+function isoBoxSVG(col,size,w,h,ht){
+  w=Math.min(w,3); h=Math.min(h,3);
+  const c=size/((w+h)+2.2), z=ht*(size/110), oy=size*0.35;
+  const P=(gx,gy,zz)=>((gx-gy)*c+size/2).toFixed(1)+','+((gx+gy)*c*0.55-zz+oy).toFixed(1);
+  const poly=(pts,fill)=>`<polygon points="${pts.join(' ')}" fill="${fill}" stroke="rgba(0,0,0,.45)" stroke-width="1"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`
+    + poly([P(0,h,z),P(w,h,z),P(w,h,0),P(0,h,0)], shade(col,.6))
+    + poly([P(w,0,z),P(w,h,z),P(w,h,0),P(w,0,0)], shade(col,.42))
+    + poly([P(0,0,z),P(w,0,z),P(w,h,z),P(0,h,z)], col)
+    + `</svg>`;
+}
+function iconEl(m, px){
+  // parts library shows the ORIGINAL in-game icons (datamined, via probonk) for easy recognition;
+  // falls back to the schematic iso box when offline / icon missing
+  const wrap=document.createElement('div');
+  wrap.style.cssText=`position:relative;width:${px}px;height:${px}px;flex:none;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))`;
+  const img=new Image();
+  img.src=ICON_BASE+m.ic; img.style.maxWidth='100%'; img.style.maxHeight='100%';
+  img.onerror=()=>{ img.remove();
+    const ht = m.c==='chassis'? 7 : modH(m);
+    wrap.innerHTML=isoBoxSVG(CAT_COLORS[m.c]||'#888', px, m.w, m.h, ht); };
+  wrap.appendChild(img);
+  return wrap;
+}
+
+/* ============================= PAGES ============================= */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('visible'));
+  document.getElementById('page-'+id).classList.add('visible');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-'+id).classList.add('active');
+  if(id==='browse') renderBrowse();
+  if(id==='editor'){ if(!cur) newBuild(true); renderEditor(); }
+}
+
+/* ============================= PALETTE ============================= */
+function renderPalTabs(){
+  const el=document.getElementById('pal-tabs'); el.innerHTML='';
+  PAL_TABS.forEach(t=>{ const b=document.createElement('button'); b.textContent=t.label;
+    if(t.id===palTab)b.classList.add('active');
+    b.onclick=()=>{ palTab=t.id; renderPalTabs(); renderPalette(); }; el.appendChild(b); });
+}
+function renderPalette(){
+  const list=document.getElementById('pal-list'); list.innerHTML='';
+  const tab=PAL_TABS.find(t=>t.id===palTab);
+  const q=(document.getElementById('pal-search').value||'').toLowerCase();
+  const mods=MODS.filter(m=>(tab.cats.includes(m.c)||(tab.ids&&tab.ids.includes(m.i)))&&(!q||m.n.toLowerCase().includes(q)));
+  document.getElementById('pal-count').textContent=mods.length+' parts';
+  mods.forEach(m=>{
+    const it=document.createElement('div'); it.className='pal-item'+(palSel===m.i?' sel':'');
+    it.appendChild(iconEl(m,40));
+    const info=document.createElement('div');
+    info.innerHTML=`<div class="nm">${esc(m.n)}</div><div class="sub"><span>${m.w}×${m.h}</span><span class="tier-b t${m.t}">Tier ${m.t}</span><span>${m.wt>1?fmt(m.wt)+' kg':'—'}</span></div>`;
+    it.title=`${m.n}\nResearch: ${m.nd} (Tier ${m.t})\nHP: ${m.hp?fmt(m.hp):'Indestructible'}${m.pow?'\nRated power: '+m.pow:''}${m.e?'\nEnergy use: '+m.e:''}${m.slots?'\nItem slots: '+m.slots:''}${m.crew?'\nCrew beds: '+m.crew:''}${m.cap?'\nWeight capacity: '+fmt(m.cap)+' kg':''}`;
+    it.appendChild(info);
+    it.onclick=()=>{
+      if(m.c==='chassis'){ applyChassis(m); return; }
+      palSel=(palSel===m.i)?null:m.i; previewRot=0; selIdx=-1; renderPalette(); renderEditor(); };
+    list.appendChild(it);
+  });
+}
+
+/* ============================= EDITOR ============================= */
+function applyChassis(m){
+  // the chassis IS the build canvas: selecting one auto-places it centered
+  if(!cur)newBuild(true);
+  if(typeof snap==='function')snap();
+  cur.chassis=m.i;
+  cur.cx=Math.floor((GRID_W-m.w)/2); cur.cy=Math.floor((GRID_H-m.h)/2);
+  palSel=null; selIdx=-1;
+  if(typeof edView!=='undefined'&&edView)edView.fittedFor=null;
+  toast('Chassis set: '+m.n+' — build canvas centered');
+  renderPalette(); renderEditor();
+}
+function newBuild(silent){
+  cur={ id:'u'+Date.now(), name:'', cat:'Solo', author:localStorage.getItem(LS_USER)||'', desc:'',
+        chassis:null, cx:3, cy:3, mods:[], created:new Date().toISOString().slice(0,10), ratings:[], comments:[] };
+  edLayer=1; palSel=null; selIdx=-1;
+  if(!silent) showPage('editor');
+  syncBuildBar(); renderEditor();
+}
+function syncBuildBar(){
+  document.getElementById('b-name').value=cur?cur.name:'';
+  const sel=document.getElementById('b-cat');
+  if(!sel.options.length) BUILD_CATS.forEach(c=>{ const o=document.createElement('option'); o.value=o.textContent=c; sel.appendChild(o); });
+  if(cur) sel.value=cur.cat;
+}
+function renderLayerBtns(){
+  // vertical floor selector like the in-game builder: [R] on top, floors, [F] below
+  const el=document.getElementById('layer-btns'); el.innerHTML='';
+  const rk=document.createElement('div'); rk.className='fkey'; rk.textContent='R'; rk.title='Floor up (R)';
+  rk.onclick=()=>{ edLayer=Math.min(LAYERS,edLayer+1); renderEditor(); }; el.appendChild(rk);
+  for(let l=LAYERS;l>=1;l--){
+    const b=document.createElement('div'); b.className='fl'+(l===edLayer?' active':'');
+    b.textContent=(l===edLayer?'⚙':l); b.title='Floor '+l+(cur?' · '+cur.mods.filter(m=>m.l===l).length+' parts':'');
+    b.onclick=()=>{ edLayer=l; renderEditor(); }; el.appendChild(b);
+  }
+  const fk=document.createElement('div'); fk.className='fkey'; fk.textContent='F'; fk.title='Floor down (F)';
+  fk.onclick=()=>{ edLayer=Math.max(1,edLayer-1); renderEditor(); }; el.appendChild(fk);
+  const fh=document.getElementById('floor-hint'); if(fh)fh.textContent='Floor '+edLayer+' / '+LAYERS;
+}
+/* ---- undo/redo, palette drawer, upper-layer toggle (in-game builder facilities) ---- */
+let undoStack=[], redoStack=[], showUpper=true;
+function snap(){ if(!cur)return;
+  undoStack.push(JSON.stringify({c:cur.chassis,x:cur.cx,y:cur.cy,m:cur.mods}));
+  if(undoStack.length>80)undoStack.shift(); redoStack.length=0; }
+function restoreState(js){ const st=JSON.parse(js);
+  cur.chassis=st.c; cur.cx=st.x; cur.cy=st.y; cur.mods=st.m; selIdx=-1; renderEditor(); }
+function undo(){ if(!cur||!undoStack.length){ toast('Nothing to undo'); return; }
+  redoStack.push(JSON.stringify({c:cur.chassis,x:cur.cx,y:cur.cy,m:cur.mods}));
+  restoreState(undoStack.pop()); }
+function redo(){ if(!cur||!redoStack.length){ toast('Nothing to redo'); return; }
+  undoStack.push(JSON.stringify({c:cur.chassis,x:cur.cx,y:cur.cy,m:cur.mods}));
+  restoreState(redoStack.pop()); }
+function togglePalette(){ document.querySelector('.editor').classList.toggle('pal-hidden');
+  if(typeof edView!=='undefined'&&edView){ const grid=document.getElementById('grid');
+    setTimeout(()=>edView.resize(grid.clientWidth||760,560),60); } }
+function toggleUpper(){ showUpper=!showUpper; toast(showUpper?'Upper layers: ghosted':'Upper layers: hidden'); renderEditor(); }
+function renderGridInto(host, build, layer, cell, interactive, mode, inval){
+  mode=mode||viewMode; inval=inval||new Map();
+  const W=GRID_W*cell, H=GRID_H*cell;
+  host.innerHTML=''; host.classList.add('iso-host');
+  const wrapW = mode==='iso'? Math.ceil(Math.SQRT2*W)+30 : W+16;
+  const wrapH = mode==='iso'? Math.ceil(Math.SQRT2*W*0.62)+LAYERS*ZSTEP+30 : H+16;
+  host.style.width=wrapW+'px'; host.style.height=wrapH+'px';
+  const scene=document.createElement('div'); scene.className='iso-scene'+(mode==='iso'?'':' flat');
+  scene.style.width=W+'px'; scene.style.height=H+'px';
+  host.appendChild(scene);
+
+  // base plane: grid lines + chassis footprint + hole cells
+  const base=document.createElement('div'); base.className='plane base';
+  base.style.transform='translateZ(-34px)';
+  for(let x=1;x<GRID_W;x++){ const l=document.createElement('div'); l.className='gline'; l.style.cssText=`left:${x*cell}px;top:0;width:1px;height:100%`; base.appendChild(l); }
+  for(let y=1;y<GRID_H;y++){ const l=document.createElement('div'); l.className='gline'; l.style.cssText=`top:${y*cell}px;left:0;height:1px;width:100%`; base.appendChild(l); }
+  if(build&&build.chassis){
+    const ch=MODIX[build.chassis];
+    const X=build.cx*cell, Y=build.cy*cell, CW=ch.w*cell, CH=ch.h*cell;
+    const sh=document.createElement('div');
+    sh.style.cssText=`position:absolute;left:${X-8}px;top:${Y-8}px;width:${CW+16}px;height:${CH+16}px;background:radial-gradient(ellipse at center, rgba(0,0,0,.6), transparent 72%);pointer-events:none`;
+    base.appendChild(sh);
+  }
+  scene.appendChild(base);
+  // chassis: 3D deck slab (walker platform)
+  if(build&&build.chassis){
+    const ch=MODIX[build.chassis];
+    const X=build.cx*cell, Y=build.cy*cell, CW=ch.w*cell, CH=ch.h*cell, SD=16;
+    const slab=document.createElement('div'); slab.className='plane';
+    slab.style.transform=`translateZ(${-SD}px)`;
+    const st=document.createElement('div');
+    st.style.cssText=`position:absolute;left:${X}px;top:${Y}px;width:${CW}px;height:${CH}px;transform:translateZ(${SD}px);box-sizing:border-box;border:2px solid rgba(201,150,60,.65);background-image:repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px ${cell}px),repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0 1px, transparent 1px ${cell}px),linear-gradient(135deg,#8b7856,#66573f);pointer-events:none`;
+    slab.appendChild(st);
+    const fr=document.createElement('div');
+    fr.style.cssText=`position:absolute;left:${X}px;top:${Y+CH}px;width:${CW}px;height:${SD}px;transform-origin:0 0;transform:rotateX(90deg);background:#4a3d2c;border:1px solid rgba(0,0,0,.5);pointer-events:none`;
+    slab.appendChild(fr);
+    const ri=document.createElement('div');
+    ri.style.cssText=`position:absolute;left:${X+CW}px;top:${Y}px;width:${SD}px;height:${CH}px;transform-origin:0 0;transform:rotateY(-90deg);background:#3c3223;border:1px solid rgba(0,0,0,.5);pointer-events:none`;
+    slab.appendChild(ri);
+    holeCells(build).forEach(k=>{ const [hx,hy]=k.split(',').map(Number);
+      const hc=document.createElement('div'); hc.className='hole-cell';
+      hc.style.cssText+=`left:${hx*cell}px;top:${hy*cell}px;width:${cell}px;height:${cell}px;transform:translateZ(${SD+1}px)`;
+      slab.appendChild(hc); });
+    scene.appendChild(slab);
+  }
+
+  // deck planes
+  for(let l=1;l<=LAYERS;l++){
+    const plane=document.createElement('div'); plane.className='plane';
+    if(l===layer)plane.classList.add('active-plane');
+    else plane.classList.add(l<layer?'dim-below':'dim-above');
+    plane.style.transform=`translateZ(${(l-1)*ZSTEP}px)`;
+    if(build) build.mods.forEach((p,idx)=>{
+      if(p.l!==l)return;
+      plane.appendChild(modEl(p,cell,false,interactive?idx:-1,inval.has(idx)));
+    });
+    if(build) doorPipsInto(plane,build,l,cell);
+    if(interactive&&l===layer){
+      const pk=document.createElement('div'); pk.className='picker'; plane.appendChild(pk);
+      host._picker=pk; host._activePlane=plane;
+    }
+    scene.appendChild(plane);
+  }
+  return host;
+}
+function doorPipsInto(plane,build,l,cell){
+  const map={};
+  build.mods.forEach((p,i)=>{ if(p.l!==l)return; if(NONWALK.includes(pclass(MODIX[p.m])))return;
+    cellsOf(p).forEach(([x,y])=>map[x+','+y]=i); });
+  build.mods.forEach((p,i)=>{ if(p.l!==l)return; if(NONWALK.includes(pclass(MODIX[p.m])))return;
+    cellsOf(p).forEach(([x,y])=>{
+      [[1,0],[0,1]].forEach(([dx,dy])=>{ const n=map[(x+dx)+','+(y+dy)];
+        if(n!==undefined&&n!==i){ const d=document.createElement('div'); d.className='door';
+          if(dx===1) d.style.cssText+=`left:${(x+1)*cell-1}px;top:${y*cell+(cell-16)/2}px;width:12px;height:16px;transform-origin:0 0;transform:rotateY(-90deg)`;
+          else d.style.cssText+=`left:${x*cell+(cell-16)/2}px;top:${(y+1)*cell-1}px;width:16px;height:12px;transform-origin:0 0;transform:rotateX(90deg)`;
+          plane.appendChild(d); } });
+    });
+  });
+}
+function modEl(p,cell,ghost,idx,bad){
+  const m=MODIX[p.m]; const r=p.r||0; const [we,he]=effWH(m,r);
+  const W=we*cell, He=he*cell, bh=modH(m), col=CAT_COLORS[m.c];
+  const d=document.createElement('div');
+  d.className='mod'+(idx===selIdx&&idx>=0?' sel-mod':'')+(bad?' bad-mod':'');
+  d.style.cssText=`left:${p.x*cell}px;top:${p.y*cell}px;width:${W}px;height:${He}px`;
+  const front=document.createElement('div'); front.className='face f-front';
+  front.style.cssText=`left:0;top:${He}px;width:${W}px;height:${bh}px;transform-origin:0 0;transform:rotateX(90deg);background:linear-gradient(180deg,${shade(col,.68)},${shade(col,.5)})`;
+  const right=document.createElement('div'); right.className='face f-right';
+  right.style.cssText=`left:${W}px;top:0;width:${bh}px;height:${He}px;transform-origin:0 0;transform:rotateY(-90deg);background:linear-gradient(90deg,${shade(col,.52)},${shade(col,.38)})`;
+  const top=document.createElement('div'); top.className='face f-top';
+  top.style.cssText=`transform:translateZ(${bh}px);background:linear-gradient(135deg,${shade(col,1.25)},${col} 55%,${shade(col,.85)})`;
+  if(m.c==='reactor') top.style.background=`radial-gradient(circle at 50% 45%, #ffd685 0%, ${col} 48%, ${shade(col,.65)} 100%)`;
+  const lb=document.createElement('span'); lb.className='lb'; lb.textContent=modLabel(m); top.appendChild(lb);
+  d.appendChild(front); d.appendChild(right); d.appendChild(top);
+  if(m.turret){ const ring=document.createElement('div'); ring.className='ring';
+    const s=Math.round(Math.min(W,He)*.48);
+    ring.style.cssText=`width:${s}px;height:${s}px;left:${Math.round((W-s)/2)}px;top:${Math.round((He-s)/2)}px;transform:translateZ(${bh+1}px)`;
+    d.appendChild(ring); }
+  d.title=`${m.n} (${m.w}×${m.h}, Tier ${m.t})`;
+  if(idx>=0){ d.onclick=(ev)=>{ ev.stopPropagation(); if(palSel)return; selIdx=(selIdx===idx)?-1:idx; renderEditor(); }; }
+  return d;
+}
+const CELL=44;
+function setReason(txt,ok){
+  const el=document.getElementById('reason-line'); if(!el)return;
+  el.textContent=txt||''; el.classList.toggle('ok',!!ok);
+}
+function renderEditorLegacy(){
+  if(!cur) return;
+  renderLayerBtns();
+  const grid=document.getElementById('grid');
+  grid.classList.remove('gl');
+  const inval=validateAll(cur);
+  renderGridInto(grid,cur,edLayer,CELL,true,viewMode,inval);
+  document.getElementById('ed-mode').textContent = palSel? '· placing: '+MODIX[palSel].n : (selIdx>=0? '· selected: '+MODIX[cur.mods[selIdx].m].n : '');
+  const pick=grid._picker;
+  if(pick){
+    pick.style.pointerEvents = palSel? 'auto':'none';
+    pick.onmousemove=(ev)=>{ if(palSel)drawPreview(ev); };
+    pick.onmouseleave=()=>{ const pv=grid.querySelector('.preview'); if(pv)pv.remove(); setReason(''); };
+    pick.onclick=(ev)=>{ if(palSel)placeAt(ev); };
+    pick.oncontextmenu=(ev)=>{ ev.preventDefault(); palSel=null; setReason(''); renderPalette(); renderEditor(); };
+  }
+  if(!palSel)setReason('');
+  renderStats();
+}
+function gridPos(ev){ return [Math.floor(ev.offsetX/CELL), Math.floor(ev.offsetY/CELL)]; }
+function previewPlacement(ev){
+  const m=MODIX[palSel]; let [x,y]=gridPos(ev);
+  const [we,he]=effWH(m,previewRot);
+  x=Math.max(0,Math.min(GRID_W-we,x)); y=Math.max(0,Math.min(GRID_H-he,y));
+  return {m:palSel,x,y,l:edLayer,r:previewRot};
+}
+function drawPreview(ev){
+  const grid=document.getElementById('grid');
+  let pv=grid.querySelector('.preview'); if(pv)pv.remove();
+  const m=MODIX[palSel];
+  const p=previewPlacement(ev);
+  const el=modEl(p,CELL,false,-1); el.classList.add('preview');
+  let reason=null;
+  if(m.c==='chassis'){ setReason('Click to set chassis position',true); }
+  else{
+    reason=validatePlacement(cur,p);
+    if(reason){ el.classList.add('bad'); setReason('✘ '+reason,false); }
+    else setReason('✔ Legal placement — doors connect automatically',true);
+  }
+  (grid._activePlane||grid).appendChild(el);
+}
+function placeAt(ev){
+  const m=MODIX[palSel];
+  const p=previewPlacement(ev);
+  if(m.c==='chassis'){
+    cur.chassis=m.i; cur.cx=Math.min(Math.max(0,p.x),GRID_W-m.w); cur.cy=Math.min(Math.max(0,p.y),GRID_H-m.h);
+    toast('Chassis set: '+m.n); palSel=null; setReason(''); renderPalette(); renderEditor(); return;
+  }
+  const reason=validatePlacement(cur,p);
+  if(reason){ toast('✘ '+reason); return; }
+  snap(); cur.mods.push(p); renderEditor();
+}
+function rotateSel(){
+  if(palSel){ previewRot=(previewRot+1)%4; toast('Rotation: '+previewRot*90+'°'); return; }
+  if(selIdx>=0){ const p=cur.mods[selIdx]; const nr=((p.r||0)+1)%4;
+    const test={...p,r:nr};
+    const reason=validatePlacement(cur,test,selIdx);
+    if(!reason){ snap(); p.r=nr; renderEditor(); } else toast('✘ '+reason); }
+}
+/* ================= LOW-POLY 3D ENGINE (three.js, mirrors the in-game builder) ================= */
+const T3={ok:(typeof THREE!=='undefined')};
+const DH3=0.62, GROUND_Y=-1.12, SLAB_H=0.34;
+let edView=null, detailView=null, thumbView=null, showGuides=true; const thumbCache=new Map();
+const _ray=T3.ok?new THREE.Raycaster():null;
+function toggleGuides(){ showGuides=!showGuides;
+  const b=document.getElementById('btn-guides'); if(b)b.classList.toggle('primary',showGuides);
+  thumbCache.clear(); renderEditor(); if(detailId)renderDetailViewer(); }
+function fitViewTo(v,build){
+  if(!build||!build.chassis)return;
+  const ch=MODIX[build.chassis];
+  v.target.set(build.cx+ch.w/2-GRID_W/2,.7,build.cy+ch.h/2-GRID_H/2);
+  v.zoom=7.4/(Math.max(ch.w,ch.h)*.78+2.3);
+  v.updateCam();
+}
+function layerY(l){ return (l-1)*DH3; }
+function rotCam(dir){ if(T3.ok&&edView){ edView.yaw+=dir*Math.PI/4; edView.updateCam(); edView.render(); } }
+function disposeObj(o){ o.traverse(n=>{ if(n.geometry)n.geometry.dispose();
+  if(n.material)(Array.isArray(n.material)?n.material:[n.material]).forEach(mm=>{ if(mm.map)mm.map.dispose(); mm.dispose(); }); }); }
+function lam(c){ const m=new THREE.MeshLambertMaterial({color:c}); m.transparent=true; return m; }
+function addEdge(mesh){ const e=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),
+  new THREE.LineBasicMaterial({color:0x17110b,transparent:true,opacity:.5})); mesh.add(e); }
+function prim(g,geo,c,x,y,z,rot,edge){ const mesh=new THREE.Mesh(geo,lam(c)); mesh.position.set(x,y,z);
+  if(rot){ mesh.rotation.x=rot[0]||0; mesh.rotation.y=rot[1]||0; mesh.rotation.z=rot[2]||0; }
+  const p=geo.parameters||{};
+  const tiny=(p.width!==undefined)&&(p.width<.05||p.height<.05||p.depth<.05);
+  if(edge!==false&&!tiny)addEdge(mesh); g.add(mesh); return mesh; }
+const B3=(g,w,h,d,c,x,y,z,rot)=>prim(g,new THREE.BoxGeometry(w,h,d),c,x,y,z,rot);
+const CY3=(g,rt,rb,h,c,x,y,z,seg,rot)=>prim(g,new THREE.CylinderGeometry(rt,rb,h,seg||8),c,x,y,z,rot);
+
+function makeView(container,W,H,thumb){
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:!!thumb});
+  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1)); renderer.setSize(W,H);
+  if(container){ container.innerHTML=''; container.appendChild(renderer.domElement); }
+  const scene=new THREE.Scene();
+  scene.add(new THREE.AmbientLight(0xcbb894,.6));
+  const sun=new THREE.DirectionalLight(0xfff2d8,.95); sun.position.set(6,12,4); scene.add(sun);
+  const fill=new THREE.DirectionalLight(0x8fa3c0,.28); fill.position.set(-7,5,-8); scene.add(fill);
+  // workshop floor: warm hangar planks + blue build tarp with chalk markings (like the in-game shipyard)
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(44,44), new THREE.MeshLambertMaterial({color:0x5a4426}));
+  floor.rotation.x=-Math.PI/2; floor.position.y=GROUND_Y-0.03; scene.add(floor);
+  let tarpMat;
+  try{
+    const tc=document.createElement('canvas'); tc.width=tc.height=512; const x=tc.getContext('2d');
+    x.fillStyle='#535e6a'; x.fillRect(0,0,512,512);
+    x.globalAlpha=.07; x.fillStyle='#ffffff';
+    for(let i=0;i<7;i++)x.fillRect(0,i*76,512,12);
+    x.globalAlpha=1; x.strokeStyle='rgba(238,238,232,.55)'; x.lineWidth=3; x.setLineDash([16,12]);
+    x.beginPath(); x.arc(256,256,150,0,Math.PI*2); x.stroke();
+    x.beginPath(); x.arc(256,256,58,0,Math.PI*2); x.stroke();
+    x.setLineDash([]); x.lineWidth=2;
+    x.beginPath(); x.moveTo(56,256); x.lineTo(456,256); x.moveTo(256,56); x.lineTo(256,456); x.stroke();
+    const arrow=(cx,cy,rot)=>{ x.save(); x.translate(cx,cy); x.rotate(rot);
+      x.beginPath(); x.moveTo(0,-14); x.lineTo(10,6); x.lineTo(-10,6); x.closePath(); x.stroke(); x.restore(); };
+    arrow(256,28,0); arrow(256,484,Math.PI); arrow(28,256,-Math.PI/2); arrow(484,256,Math.PI/2);
+    tarpMat=new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(tc)});
+  }catch(e){ tarpMat=new THREE.MeshLambertMaterial({color:0x535e6a}); }
+  const tarp=new THREE.Mesh(new THREE.PlaneGeometry(15,15), tarpMat);
+  tarp.rotation.x=-Math.PI/2; tarp.position.y=GROUND_Y; scene.add(tarp);
+  const cam=new THREE.OrthographicCamera(-8,8,6,-6,-60,120);
+  const v={renderer,scene,cam,container,W,H,yaw:Math.PI*0.28,pitch:0.615,dist:24,zoom:1,target:new THREE.Vector3(0,0.7,0)};
+  v.updateCam=()=>{ const cp=Math.cos(v.pitch);
+    cam.position.set(v.target.x+v.dist*cp*Math.cos(v.yaw), v.target.y+v.dist*Math.sin(v.pitch), v.target.z+v.dist*cp*Math.sin(v.yaw));
+    cam.lookAt(v.target);
+    const a=v.W/v.H, s=7.4/v.zoom;
+    cam.left=-s*a; cam.right=s*a; cam.top=s; cam.bottom=-s; cam.updateProjectionMatrix(); };
+  v.render=()=>renderer.render(scene,cam);
+  v.resize=(W2,H2)=>{ v.W=W2; v.H=H2; renderer.setSize(W2,H2); v.updateCam(); v.render(); };
+  v.updateCam();
+  return v;
+}
+function ndc3(v,e){ const r=v.renderer.domElement.getBoundingClientRect();
+  return { x:((e.clientX-r.left)/r.width)*2-1, y:-(((e.clientY-r.top)/r.height)*2-1) }; }
+function pickPoint(v,e,y){ _ray.setFromCamera(ndc3(v,e),v.cam);
+  const pl=new THREE.Plane(new THREE.Vector3(0,1,0),-y); const pt=new THREE.Vector3();
+  return _ray.ray.intersectPlane(pl,pt)?pt:null; }
+
+/* ---- original low-poly replicas per module family (own designs, not game assets) ---- */
+function blendHex(a,b,t){ const pa=parseInt(a.slice(1),16), pb=parseInt(b.slice(1),16);
+  const ch=(x,y)=>Math.round(x+(y-x)*t);
+  const r=ch((pa>>16)&255,(pb>>16)&255), gg=ch((pa>>8)&255,(pb>>8)&255), bl=ch(pa&255,pb&255);
+  return '#'+((1<<24)|(r<<16)|(gg<<8)|bl).toString(16).slice(1); }
+function colFor(m){ const base=CAT_COLORS[m.c];
+  if(m.ic.includes('-wood-'))return blendHex(base,'#96713f',.45);   // S&H wooden variants
+  if(m.ic.includes('cmetal')||m.ic.includes('-metal'))return blendHex(base,'#8d97a3',.38); // S.Trs armored variants
+  if(m.ic.includes('frame'))return blendHex(base,'#77828d',.22);    // framed variants
+  return base; }
+function needsFacing(m){ return m.c==='armor'||m.c==='turret'||m.c==='engine'||m.c==='steering'||['entry','entry2','vest'].includes(pclass(m)); }
+function bestFacing(b,p){
+  const m=MODIX[p.m]; if(m.w!==m.h)return p.r||0;
+  const f=chFoot(b); const cells=cellsOf(p);
+  const occ=(x,y)=>b.mods.some(q=>q.l===p.l&&cellsOf(q).some(([a,c])=>a===x&&c===y));
+  let best=p.r||0, bs=-99;
+  for(let r=0;r<4;r++){
+    const dir=[[0,-1],[1,0],[0,1],[-1,0]][r]; let s=0;
+    cells.forEach(([x,y])=>{
+      const fx=x+dir[0], fy=y+dir[1], bx=x-dir[0], by=y-dir[1];
+      const frontOut=f&&!inFoot(f,fx,fy), frontFree=!occ(fx,fy);
+      const backSolid=occ(bx,by)||(p.l===1&&f&&inFoot(f,bx,by));
+      s += (p.l===1?(frontOut?2:0):0) + (frontFree?1:0) + (backSolid?1:0);
+    });
+    if(s>bs){ bs=s; best=r; }
+  }
+  return best;
+}
+/* SAND material palette, matched to the in-game module renders:
+   sand-plate beige, warm timber, verdigris NZ machinery, pale-mint S.Trs metal, rust armored balconies */
+const PAL={ plank:'#ab8b5d', plankDk:'#84683f', timber:'#9c7c4e', sand:'#c4b08c', sandDk:'#a3906c',
+  mint:'#9cb591', mintDk:'#78936f', verd:'#6f9d7f', verdDk:'#547c62', rust:'#6e4a33', rustDk:'#523524',
+  canvas:'#d8c69d', glass:'#b9d3e2', dark:'#3a2f21', socle:'#221a10' };
+function lowPolyModule(m){
+  const g=new THREE.Group();
+  const w=m.w,d=m.h,cls=pclass(m);
+  const isMetal=m.ic.includes('metal'), isWood=m.ic.includes('wood');
+  const wallC=isMetal?PAL.mint:PAL.plank, wallD=isMetal?PAL.mintDk:PAL.plankDk;
+  const H=Math.max(.18,modH(m)/34);
+  // dark socle per module + category chip = clean separation & readable categories
+  const socle=()=>{ B3(g,w*.98,.04,d*.98,PAL.socle,0,.02,0,null);
+    const chip=new THREE.Mesh(new THREE.BoxGeometry(.13,.05,.13), new THREE.MeshBasicMaterial({color:CAT_COLORS[m.c],transparent:true}));
+    chip.position.set(-w/2+.13,.045,-d/2+.13); g.add(chip); };
+  const plankPlate=(inset,yy)=>{ B3(g,w*inset,.06,d*inset,PAL.plank,0,yy||.07,0);
+    for(let i=1;i<Math.round(d*3);i++)B3(g,w*inset*.98,.005,.012,PAL.plankDk,0,(yy||.07)+.033,-d*inset/2+i*(d*inset/Math.round(d*3)),null); };
+  const rail=(col,skipFront)=>{ // wooden posts + thin wire rails (matches the deck renders)
+    const pc=col||wallD;
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.04,.3,.04,pc,sx*w*.45,.22,sz*d*.45));
+    if(w>1)B3(g,.04,.3,.04,pc,0,.22,-d*.45,null),B3(g,.04,.3,.04,pc,0,.22,d*.45,null);
+    if(d>1)B3(g,.04,.3,.04,pc,-w*.45,.22,0,null),B3(g,.04,.3,.04,pc,w*.45,.22,0,null);
+    for(let k=1;k<=3;k++){ const y=.1+k*.08;
+      B3(g,w*.9,.013,.013,'#4a4136',0,y,d*.45,null);
+      if(!skipFront)B3(g,w*.9,.013,.013,'#4a4136',0,y,-d*.45,null);
+      B3(g,.013,.013,d*.9,'#4a4136',-w*.45,y,0,null); B3(g,.013,.013,d*.9,'#4a4136',w*.45,y,0,null);
+    } };
+  const fanFace=(z)=>{ // big riveted ventilation fan (signature of the crew containers)
+    CY3(g,.22,.24,.06,wallD,0,.32,z,12,[Math.PI/2,0,0]);
+    CY3(g,.19,.19,.02,'#241f18',0,.32,z-.02,12,[Math.PI/2,0,0]);
+    for(let i=0;i<3;i++)B3(g,.34,.05,.02,PAL.sandDk,0,.32,z-.035,[0,0,i*Math.PI/3],false);
+    CY3(g,.06,.06,.05,PAL.sand,0,.32,z-.04,6,[Math.PI/2,0,0]); };
+  const cage=(col,ph)=>{ const pc=col||PAL.timber; ph=ph||.52;
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.08,ph,.08,pc,sx*w*.43,ph/2,sz*d*.43));
+    B3(g,w*.9,.06,.06,pc,0,ph,-d*.43); B3(g,w*.9,.06,.06,pc,0,ph,d*.43);
+    B3(g,.06,.06,d*.9,pc,-w*.43,ph,0); B3(g,.06,.06,d*.9,pc,w*.43,ph,0);
+    B3(g,.05,ph*.95,.05,pc,-w*.43,ph/2,.0,[.62,0,0]); };
+  const glow=(sx,sy,sz,x,y,z)=>{ const gl=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz), new THREE.MeshBasicMaterial({color:0xffd685,transparent:true})); gl.position.set(x,y,z); g.add(gl); return gl; };
+  socle();
+  if(m.c==='reactor'){
+    if(m.i==='r_80r'||m.i==='r_81'||m.i==='r_81ld'){
+      // round reactor: crate/plating on one cell, big verdigris drum spilling into the rear clearance
+      const met=m.i==='r_81', open=m.i==='r_81ld';
+      B3(g,1.9,.05,.9,PAL.sandDk,0,.045,0,null);
+      if(!open){
+        const cc=met?PAL.mint:PAL.plank, cd=met?PAL.mintDk:PAL.plankDk;
+        B3(g,.86,.08,.86,cd,.5,.08,0);
+        [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.09,.58,.09,cd,.5+sx*.4,.33,sz*.4));
+        B3(g,.9,.06,.9,cc,.5,.64,0);
+        B3(g,.68,.04,.05,cd,.5,.68,0,[0,.8,0],false); B3(g,.68,.04,.05,cd,.5,.68,0,[0,-.8,0],false);
+        B3(g,.86,.24,.06,cc,.5,.22,-.4); B3(g,.86,.24,.06,cc,.5,.22,.4);
+      } else B3(g,.9,.06,.9,PAL.plank,.5,.06,0);
+      CY3(g,.55,.6,.6,PAL.verd,-.45,.39,.5,12);
+      CY3(g,.57,.57,.07,PAL.verdDk,-.45,.72,.5,12);
+      CY3(g,.14,.17,.28,PAL.verdDk,-.45,.9,.5,8);
+      CY3(g,.1,.1,.06,PAL.dark,-.45,1.06,.5,8);
+      CY3(g,.32,.32,.07,PAL.sandDk,-1.02,.36,.5,10,[0,0,Math.PI/2]);
+      CY3(g,.09,.09,.12,PAL.dark,-1.06,.36,.5,6,[0,0,Math.PI/2]);
+      CY3(g,.07,.07,.7,PAL.verdDk,-.02,.18,.2,6,[0,0,Math.PI/2]);
+      glow(.13,.11,.05,-.45,.3,-.03);
+    } else if(m.i==='r_82'){
+      // long mint duct, open square mouth at the front, round turbine tower at the rear
+      B3(g,.8,.5,d*.84,PAL.mint,0,.32,.12);
+      B3(g,.86,.05,d*.88,PAL.mintDk,0,.6,.12);
+      B3(g,.62,.34,.05,'#1c1a14',0,.3,-d*.42,null);
+      B3(g,.72,.06,.06,PAL.mintDk,0,.52,-d*.42,null);
+      B3(g,.06,.4,.06,PAL.mintDk,-.34,.3,-d*.42,null); B3(g,.06,.4,.06,PAL.mintDk,.34,.3,-d*.42,null);
+      CY3(g,.28,.32,.38,PAL.verd,0,.8,d*.28,10);
+      CY3(g,.34,.18,.16,PAL.verdDk,0,1.05,d*.28,10);
+      B3(g,.7,.04,.5,PAL.mintDk,0,.63,-d*.05,null);
+      glow(.14,.08,.05,.41,.3,d*.05);
+    } else {
+      // wooden / framed long reactors: timber cage + horizontal drum with end rings
+      plankPlate(.9);
+      if(m.ic.includes('framed')||m.i==='r_80l')cage(PAL.timber,.6);
+      CY3(g,.26,.26,d*.74,PAL.verd,0,.36,0,10,[Math.PI/2,0,0]);
+      CY3(g,.29,.29,.06,PAL.verdDk,0,.36,-d*.18,10,[Math.PI/2,0,0]);
+      CY3(g,.29,.29,.06,PAL.verdDk,0,.36,d*.18,10,[Math.PI/2,0,0]);
+      CY3(g,.08,.1,.3,PAL.verdDk,0,.66,d*.26,6);
+      B3(g,.3,.3,.04,'#1c1a14',0,.36,-d*.385,null);
+      glow(.12,.12,.05,0,.36,-d*.4);
+    }
+  } else if(m.c==='engine'){
+    // drum motor with big side flywheel on a sand skid (per the Mb2k render)
+    B3(g,w*.8,.08,d*.8,PAL.sand,0,.06,0);
+    CY3(g,.3,.3,.5,PAL.verd,-.03,.42,0,12,[0,0,Math.PI/2]);
+    CY3(g,.34,.34,.06,'#332e26',.26,.42,0,12,[0,0,Math.PI/2]);
+    CY3(g,.07,.07,.1,PAL.sandDk,.32,.42,0,6,[0,0,Math.PI/2]);
+    B3(g,.2,.28,.05,'#241f18',-.08,.34,-d*.36,null);
+    B3(g,.24,.08,.3,PAL.verdDk,-.05,.62,.05);
+    if(m.i==='e_mb3'){ CY3(g,.1,.13,.38,PAL.verdDk,0,.8,d*.22,8); B3(g,.3,.12,.22,PAL.verdDk,-.08,.6,d*.24); }
+  } else if(m.c==='steering'){
+    const glazed=(m.i==='s_k81v'||m.i==='s_k82v'||m.i==='s_kormylo');
+    plankPlate(.9);
+    if(glazed){ // glazed pilot cabin: wall band + window band + roof
+      const bandC=m.i==='s_kormylo'?PAL.plank:PAL.mint;
+      B3(g,w*.86,.22,d*.86,bandC,0,.18,0);
+      const gm=new THREE.Mesh(new THREE.BoxGeometry(w*.84,.24,d*.84), lam(PAL.glass)); gm.material.opacity=.55; gm.position.set(0,.41,0); g.add(gm);
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.05,.26,.05,bandC,sx*w*.41,.42,sz*d*.41));
+      B3(g,w*.92,.05,d*.92,m.i==='s_kormylo'?PAL.plankDk:PAL.mintDk,0,.56,0);
+      CY3(g,.09,.09,.03,PAL.dark,0,.28,-d*.24,8,[Math.PI/2,0,0]);
+    } else if(m.ic.includes('framed')){ // timber cage steering deck
+      cage(PAL.timber,.55);
+      B3(g,.09,.16,.09,PAL.dark,0,.15,-d*.18);
+      CY3(g,.11,.11,.03,'#3a2a18',0,.32,-d*.18,10,[Math.PI/2,0,0]);
+    } else { // open flybridge: dark blue tarp floor, wire rails, barrel wheel-pedestal, canvas awning (per render)
+      B3(g,w*.84,.025,d*.84,'#3d5166',0,.1,0,null);
+      rail(PAL.plankDk,false);
+      CY3(g,.12,.15,.24,PAL.rust,0,.23,-d*.16,8);
+      CY3(g,.13,.13,.035,'#3a2a18',0,.42,-d*.16,10,[Math.PI/2,0,0]);
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.035,.6,.035,PAL.plankDk,sx*w*.4,.38,sz*d*.36));
+      B3(g,w*.86,.03,d*.62,PAL.canvas,0,.66,d*.08,[.06,0,.04]);
+    }
+  } else if(m.c==='captain'||m.c==='crew'){
+    // closed container cabin: big riveted fan on the front, open doorway at the rear (per renders)
+    const bh=m.w>1?.55:.62;
+    B3(g,w*.86,bh,d*.86,wallC,0,bh/2+.04,0);
+    B3(g,w*.8,.05,d*.8,wallD,0,bh+.06,0); // rounded-edge roof strip
+    B3(g,w*.9,.04,d*.9,wallC,0,bh+.02,0,null);
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.06,bh,.06,wallD,sx*w*.4,bh/2+.04,sz*d*.4));
+    fanFace(-d*.43+.005);
+    B3(g,.28,bh*.72,.05,'#17130d',0,bh*.42,d*.43,null); // rear doorway opening
+    B3(g,.32,.04,.06,wallD,0,bh*.8,d*.43,null);
+    B3(g,.16,.08,.02,PAL.sandDk,w*.28,bh*.6,-d*.435,null); // name plaque
+    if(isWood){ // wooden variants: canvas X-top + slat lines
+      B3(g,w*.78,.04,d*.78,'#cddbb6',0,bh+.09,0);
+      B3(g,w*.6,.03,.04,PAL.plankDk,0,bh+.12,0,[0,.7,0],false);
+      B3(g,w*.6,.03,.04,PAL.plankDk,0,bh+.12,0,[0,-.7,0],false);
+      for(let s2=0;s2<2;s2++)B3(g,w*.84,.02,.015,PAL.plankDk,0,.16+s2*.18,-d*.435,null);
+    }
+    if(m.c==='captain'){ CY3(g,.02,.02,.44,PAL.dark,w*.3,bh+.26,d*.3,5);
+      B3(g,.15,.09,.02,'#c9963c',w*.3+.08,bh+.42,d*.3);
+      B3(g,w*.36,.04,d*.36,'#c9963c',0,bh+.1,0,null); }
+  } else if(m.c==='cargo'){
+    if(m.i.startsWith('cg_dk')){ // open shelf racks
+      plankPlate(.9);
+      const light=m.i==='cg_dkl'||m.i==='cg_dkfs';
+      const sh=(x,rot)=>{ for(let lv=0;lv<3;lv++)B3(g,.34,.03,d*.7,PAL.plank,x,.16+lv*.17,0);
+        B3(g,.04,.55,.04,PAL.plankDk,x-.15,.3,-d*.33); B3(g,.04,.55,.04,PAL.plankDk,x+.15,.3,-d*.33);
+        B3(g,.04,.55,.04,PAL.plankDk,x-.15,.3,d*.33); B3(g,.04,.55,.04,PAL.plankDk,x+.15,.3,d*.33);
+        B3(g,.14,.1,.14,PAL.sandDk,x,.22,-d*.12,null); B3(g,.12,.09,.12,PAL.rust,x,.39,d*.15,null); };
+      if(light)sh(0); else { sh(-w*.24); if(m.i.includes('l'))B3(g,w*.5,.03,.34,PAL.plank,w*.1,.33,d*.3); else sh(w*.24); }
+      if(m.ic.includes('frame'))cage(PAL.timber,.6);
+    } else { // closed containers: corrugated mint (S.Trs) or plank crate (S&H)
+      const bh=.5, uShape=m.i.includes('u'), lShape=/l$/.test(m.i)||m.i==='cg_mbl';
+      const seg=(x0,z0,ww,dd)=>{ B3(g,ww,bh,dd,wallC,x0,bh/2+.04,z0);
+        B3(g,ww*1.04,.05,dd*1.04,wallD,x0,bh+.06,z0);
+        for(let i=1;i<4;i++)B3(g,isMetal?.02:.03,bh*.9,.015,wallD,x0-ww/2+i*ww/4,bh/2+.04,z0-dd/2-.002,null); };
+      if(uShape&&d>1){ seg(0,-d*.24,w*.86,d*.4); seg(-w*.24,d*.22,w*.36,d*.42); seg(w*.24,d*.22,w*.36,d*.42); }
+      else if(uShape){ seg(-w*.26,0,w*.34,d*.86); seg(w*.26,0,w*.34,d*.86); seg(0,d*.26,w*.86,d*.32); }
+      else if(lShape){ seg(0,-d*.22,w*.86,d*.42); seg(-w*.22,d*.2,w*.4,d*.42); }
+      else seg(0,0,w*.86,d*.86);
+      // X-braced door on the front
+      B3(g,.3,.36,.03,wallD,0,.26,-d*.43,null);
+      B3(g,.04,.42,.02,PAL.dark,0,.26,-d*.435,[0,0,.7]);
+      B3(g,.04,.42,.02,PAL.dark,0,.26,-d*.435,[0,0,-.7]);
+      if(!isMetal){ // wooden crates: pale canvas X-top, slatted walls, one open shelved side
+        B3(g,w*.78,.04,d*.78,'#cddbb6',0,bh+.1,0);
+        B3(g,w*.6,.03,.04,PAL.plankDk,0,bh+.13,0,[0,.7,0],false);
+        B3(g,w*.6,.03,.04,PAL.plankDk,0,bh+.13,0,[0,-.7,0],false);
+        for(let s2=0;s2<2;s2++)B3(g,.015,.02,d*.7,PAL.plankDk,-w*.435,.16+s2*.16,0,null);
+        B3(g,.04,bh*.72,d*.6,'#17130d',w*.42,bh/2+.04,0,null);
+        for(let s3=0;s3<3;s3++)B3(g,.02,.025,d*.5,PAL.plank,w*.44,.15+s3*.13,0,null);
+      } else { B3(g,w*.78,.05,d*.78,PAL.mint,0,bh+.09,0); }
+    }
+  } else if(m.c==='turret'){
+    if(m.i==='t_ram'){ // verdigris ram machine with wedge
+      B3(g,w*.7,.4,d*.5,PAL.verd,0,.26,.16);
+      prim(g,new THREE.ConeGeometry(.36,.8,4),PAL.verdDk,0,.3,-d*.36,[-Math.PI/2,Math.PI/4,0]);
+      B3(g,.08,.3,d*.44,PAL.sandDk,-w*.3,.2,.08,[0,.15,0]);
+      B3(g,.08,.3,d*.44,PAL.sandDk, w*.3,.2,.08,[0,-.15,0]);
+    } else if(m.i==='t_embr'){ // sloped armored wall
+      plankPlate(.9);
+      B3(g,w*.88,.44,.1,PAL.verd,0,.3,-d*.36,[-.3,0,0]);
+      B3(g,.2,.4,.1,PAL.verdDk,-w*.36,.26,-d*.24,[-.3,.5,0]);
+      B3(g,.2,.4,.1,PAL.verdDk, w*.36,.26,-d*.24,[-.3,-.5,0]);
+      B3(g,w*.5,.07,.04,PAL.dark,0,.34,-d*.42,null);
+    } else if(m.i==='t_casemate'){ // enclosed mint box with slit
+      B3(g,w*.84,.52,d*.84,PAL.mint,0,.3,0);
+      B3(g,w*.9,.06,d*.9,PAL.mintDk,0,.59,0);
+      B3(g,w*.5,.09,.04,PAL.dark,0,.4,-d*.425,null);
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.06,.52,.06,PAL.mintDk,sx*w*.39,.3,sz*d*.39));
+    } else { // open turret platform: wire railing + empty round mount base (cannons are separate items)
+      plankPlate(.94);
+      const met=m.ic.includes('metal');
+      if(met){ const ph=.2, pc=PAL.sand; // armored: low solid parapet
+        B3(g,w*.9,ph,.05,pc,0,ph/2+.08,d*.44);
+        B3(g,.05,ph,d*.9,pc,-w*.44,ph/2+.08,0); B3(g,.05,ph,d*.9,pc,w*.44,ph/2+.08,0);
+        B3(g,w*.9,ph,.05,pc,0,ph/2+.08,-d*.44);
+      } else rail(PAL.plankDk,false);
+      CY3(g,.26,.3,.08,'#4a4136',0,.15,0,12);
+      B3(g,.42,.05,.09,PAL.plankDk,0,.2,0,null); B3(g,.09,.05,.42,PAL.plankDk,0,.2,0,null);
+      CY3(g,.09,.09,.1,PAL.dark,0,.24,0,8);
+    }
+  } else if(m.c==='armor'){ // slanted plates hugging the outer cell edge
+    const framed=m.ic.includes('framed');
+    B3(g,w*.9,H,.08,framed?PAL.plank:PAL.sand,0,H*.5,-d*.42,[m.i==='a_hasr'?.14:-.14,0,0]);
+    B3(g,w*.84,.05,.05,PAL.sandDk,0,H*.98,-d*.38,null);
+    if(framed){ B3(g,.07,H*.6,.09,PAL.timber,-w*.3,H*.28,-d*.16,[.5,0,0]);
+      B3(g,.07,H*.6,.09,PAL.timber, w*.3,H*.28,-d*.16,[.5,0,0]);
+      B3(g,w*.8,.06,.06,PAL.timber,0,.05,-d*.1,null); }
+    else { B3(g,.08,.1,.3,PAL.sandDk,-w*.26,.07,-d*.2,null); B3(g,.08,.1,.3,PAL.sandDk,w*.26,.07,-d*.2,null); }
+  } else if(m.c==='utility'){
+    if(cls==='vest'||cls==='entry'||cls==='entry2'){
+      // entrance vestibule: open cube frame with climb-through floor, canvas X-top, ladder rungs on a corner post
+      B3(g,w*.9,.06,d*.9,PAL.plank,0,.05,0);
+      B3(g,w*.46,.05,d*.46,'#0f0c08',0,.09,0,null);
+      const pc=m.i==='u_veststrs'?PAL.mintDk:PAL.timber;
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>B3(g,.09,.62,.09,pc,sx*w*.4,.34,sz*d*.4));
+      B3(g,w*.86,.06,.06,pc,0,.65,-d*.4); B3(g,w*.86,.06,.06,pc,0,.65,d*.4);
+      B3(g,.06,.06,d*.86,pc,-w*.4,.65,0); B3(g,.06,.06,d*.86,pc,w*.4,.65,0);
+      B3(g,w*.78,.035,d*.78,m.i==='u_veststrs'?PAL.mint:'#cddbb6',0,.7,0);
+      B3(g,w*.6,.03,.04,PAL.plankDk,0,.73,0,[0,.8,0],false); B3(g,w*.6,.03,.04,PAL.plankDk,0,.73,0,[0,-.8,0],false);
+      for(let i=0;i<4;i++)B3(g,.13,.03,.04,PAL.sand,w*.4+.01,.14+i*.14,-d*.4,null);
+      // boarding ladder leading DOWN over the hull edge to the ground
+      B3(g,.035,1.05,.035,PAL.plankDk,-.16,-.5,-d*.44,null);
+      B3(g,.035,1.05,.035,PAL.plankDk,.16,-.5,-d*.44,null);
+      for(let i=0;i<5;i++)B3(g,.3,.03,.03,PAL.sand,0,-.14-i*.2,-d*.44,null);
+      if(m.i==='u_veststrs'){ B3(g,w*.8,.3,.05,PAL.mint,0,.2,d*.4); B3(g,.05,.3,d*.8,PAL.mint,-w*.4,.2,0); B3(g,.05,.3,d*.8,PAL.mint,w*.4,.2,0); }
+      if(m.i==='u_fort'){ B3(g,w*.5,.22,.05,PAL.verd,0,.18,-d*.42); }
+    } else { // armaments workshops: bench + tools
+      plankPlate(.9);
+      if(m.i!=='u_wb'){ B3(g,w*.86,.4,.06,wallC,0,.24,d*.42); B3(g,.06,.4,d*.86,wallC,-w*.43,.24,0); B3(g,.06,.4,d*.86,wallC,w*.43,.24,0); }
+      B3(g,w*.6,.08,.24,PAL.plankDk,0,.28,d*.26); // bench top
+      B3(g,.05,.24,.2,PAL.plankDk,-w*.25,.14,d*.26); B3(g,.05,.24,.2,PAL.plankDk,w*.25,.14,d*.26);
+      B3(g,.14,.1,.22,'#4d565f',-w*.12,.37,d*.26); // anvil
+      CY3(g,.1,.12,.24,PAL.rust,w*.26,.2,-d*.16,8); // barrel
+      B3(g,.16,.22,.12,PAL.sandDk,-w*.28,.19,-d*.2); // toolbox
+    }
+  } else { /* structure & decks */
+    if(m.stairs){
+      if(m.i==='st_frm'){ plankPlate(.9);
+        for(let i=0;i<5;i++)B3(g,w*.6,.035,d*.16,PAL.plank,0,.1+i*.12,d*.28-i*d*.15);
+        B3(g,.05,.03,d*.86,PAL.timber,-w*.32,.34,0,[.5,0,0]); B3(g,.05,.03,d*.86,PAL.timber,w*.32,.34,0,[.5,0,0]); }
+      else { for(let i=0;i<5;i++)B3(g,w*.5,.03,d*.15,PAL.sandDk,0,.08+i*.12,d*.3-i*d*.15);
+        B3(g,.03,.5,.03,PAL.sandDk,-w*.26,.3,-d*.3); B3(g,.03,.5,.03,PAL.sandDk,w*.26,.3,-d*.3); }
+    } else if(m.frame){ // open timber cage
+      cage(m.ic.includes('armored')?PAL.sand:PAL.timber, m.i.startsWith('f_lc')?.44:.52);
+      if(m.i.startsWith('f_lc')){ B3(g,.07,.5,.07,PAL.timber,0,.22,0,[0,0,.75]); }
+      B3(g,w*.42,.04,d*.42,'#14100c',0,.03,0,null);
+    } else if(m.i.startsWith('b_')){ // balconies
+      if(m.ic.includes('metal')){ // armored: dark rust tub
+        B3(g,w*.9,.05,d*.9,PAL.rustDk,0,.06,0);
+        B3(g,w*.9,.3,.05,PAL.rust,0,.2,-d*.43);
+        B3(g,.05,.3,d*.9,PAL.rust,-w*.44,.2,0); B3(g,.05,.3,d*.9,PAL.rust,w*.44,.2,0);
+      } else { plankPlate(.9); rail(PAL.plankDk,false); }
+    } else if(m.i.startsWith('c_')){ // corridor: two walls + roof beams
+      plankPlate(.9);
+      B3(g,.06,.44,d*.9,wallC,-w*.43,.28,0); B3(g,.06,.44,d*.9,wallC,w*.43,.28,0);
+      B3(g,w*.9,.05,.08,wallD,0,.52,-d*.22); B3(g,w*.9,.05,.08,wallD,0,.52,d*.22);
+    } else { // plain decks with plank floor + railing
+      plankPlate(.94);
+      if(!m.i.includes('nr'))rail(m.ic.includes('armored')?PAL.sand:PAL.plankDk,false);
+      else if(m.ic.includes('armored'))B3(g,w*.9,.03,d*.9,PAL.sand,0,.1,0,null);
+    }
+  }
+  return g;
+}
+function chassisMesh3(build){
+  // the chassis is the build canvas: generous skirt, brass rim, visible cell grid, sturdy walker legs
+  const g=new THREE.Group(); const ch=MODIX[build.chassis];
+  const w=ch.w,d=ch.h;
+  const cx=build.cx+w/2-GRID_W/2, cz=build.cy+d/2-GRID_H/2;
+  B3(g,w+.34,SLAB_H+.16,d+.34,'#57492f',cx,-(SLAB_H+.16)/2,cz);
+  B3(g,w+.1,.08,d+.1,'#8b7856',cx,.02,cz);
+  B3(g,w+.34,.06,.1,'#a97b2c',cx,.06,cz-(d+.34)/2+.05);
+  B3(g,w+.34,.06,.1,'#a97b2c',cx,.06,cz+(d+.34)/2-.05);
+  B3(g,.1,.06,d+.34,'#a97b2c',cx-(w+.34)/2+.05,.06,cz);
+  B3(g,.1,.06,d+.34,'#a97b2c',cx+(w+.34)/2-.05,.06,cz);
+  for(let i=1;i<w;i++)B3(g,.025,.02,d,'#4f4128',build.cx+i-GRID_W/2,.075,cz);
+  for(let j=1;j<d;j++)B3(g,w,.02,.025,'#4f4128',cx,.075,build.cy+j-GRID_H/2);
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>CY3(g,.08,.08,.07,'#c9963c',cx+sx*(w/2-.14),.1,cz+sz*(d/2-.14),8));
+  holeCells(build).forEach(k=>{ const [hx,hy]=k.split(',').map(Number);
+    B3(g,.94,.09,.94,'#0f0c08',hx+.5-GRID_W/2,.06,hy+.5-GRID_H/2); });
+  const legsPerSide=d>=5?3:2;
+  for(let i=0;i<legsPerSide;i++){
+    const t=(i+.5)/legsPerSide, lz=build.cy+t*d-GRID_H/2;
+    [[-1,build.cx],[1,build.cx+w]].forEach(([s,lx0])=>{
+      const lx=lx0-GRID_W/2;
+      CY3(g,.14,.14,.12,'#3c3223',lx+s*.1,-SLAB_H-.1,lz,8,[0,0,Math.PI/2]);
+      B3(g,.2,.74,.18,'#4a3d2c',lx+s*.3,-SLAB_H-.22,lz,[0,0,s*.6]);
+      B3(g,.16,.6,.16,'#3c3223',lx+s*.58,-SLAB_H-.62,lz);
+      B3(g,.46,.1,.58,'#2e2519',lx+s*.58,GROUND_Y+.06,lz);
+    });
+  }
+  return g;
+}
+function doorMeshes3(build){
+  const groups=[];
+  for(let l=1;l<=LAYERS;l++){
+    const dg=new THREE.Group(); dg.userData={l};
+    const map={};
+    build.mods.forEach((p,i)=>{ if(p.l!==l||NONWALK.includes(pclass(MODIX[p.m])))return;
+      cellsOf(p).forEach(([x,y])=>map[x+','+y]=i); });
+    build.mods.forEach((p,i)=>{ if(p.l!==l||NONWALK.includes(pclass(MODIX[p.m])))return;
+      cellsOf(p).forEach(([x,y])=>{
+        [[1,0],[0,1]].forEach(([dx,dy])=>{ const n=map[(x+dx)+','+(y+dy)];
+          if(n!==undefined&&n!==i){
+            const s=showGuides?1.55:1;
+            const dm=new THREE.Mesh(new THREE.BoxGeometry(dx?.07:.3*s,.32*s,dx?.3*s:.07),
+              showGuides?new THREE.MeshBasicMaterial({color:0xe8b862,transparent:true}):lam('#e8b862'));
+            dm.position.set(x+(dx?1:.5)-GRID_W/2, layerY(l)+.16*s, y+(dy?1:.5)-GRID_H/2);
+            addEdge(dm); dg.add(dm);
+            if(showGuides){ // door frame posts for readability
+              const p1=new THREE.Mesh(new THREE.BoxGeometry(dx?.05:.06,.5,dx?.06:.05), lam('#8a6c3c'));
+              p1.position.set(dm.position.x+(dx?0:-.18), layerY(l)+.25, dm.position.z+(dx?-.18:0)); dg.add(p1);
+              const p2=p1.clone(); p2.position.set(dm.position.x+(dx?0:.18), layerY(l)+.25, dm.position.z+(dx?.18:0)); dg.add(p2);
+            }
+          } });
+      });
+    });
+    if(dg.children.length)groups.push(dg);
+  }
+  return groups;
+}
+function overlayBox3(w,d,H,color,op){
+  const mm=new THREE.Mesh(new THREE.BoxGeometry(w*.99,H+.1,d*.99),
+    new THREE.MeshBasicMaterial({color,transparent:true,opacity:op,depthWrite:false}));
+  mm.position.y=(H+.1)/2; mm.userData.baseOp=op; return mm;
+}
+function labelSprite3(txt){
+  const c=document.createElement('canvas'); c.width=512; c.height=72;
+  const x=c.getContext('2d'); x.font='bold 30px Trebuchet MS,Verdana'; x.textAlign='center'; x.textBaseline='middle';
+  const tw=Math.min(480,x.measureText(txt).width+30);
+  x.fillStyle='rgba(24,17,10,.85)'; x.fillRect(256-tw/2,8,tw,54);
+  x.strokeStyle='rgba(232,184,98,.9)'; x.strokeRect(256-tw/2,8,tw,54);
+  x.fillStyle='#e8dcc8'; x.fillText(txt,256,36);
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));
+  s.scale.set(3.4,.48,1); return s;
+}
+function moduleMesh3(p,idx,activeLayer,inval,interactive){
+  const m=MODIX[p.m]; const [we,he]=effWH(m,p.r||0);
+  const g=lowPolyModule(m);
+  const H=Math.max(.18,modH(m)/34);
+  if(showGuides&&m.clr){ // hatched marker over the keep-free overhang zone
+    for(let dx=0;dx<m.clr.w;dx++)for(let dy=0;dy<m.clr.h;dy++){
+      const mk=new THREE.Mesh(new THREE.BoxGeometry(.92,.015,.92),
+        new THREE.MeshBasicMaterial({color:0xe8b862,transparent:true,opacity:.18,depthWrite:false}));
+      mk.position.set(m.clr.x+dx+.5-m.w/2,.02,m.clr.y+dy+.5-m.h/2); g.add(mk);
+    }
+  }
+  if(showGuides&&needsFacing(m)){ // facing arrow (orientation guide)
+    const ar=new THREE.Mesh(new THREE.ConeGeometry(.11,.3,3), new THREE.MeshBasicMaterial({color:0xe8b862,transparent:true}));
+    ar.rotation.x=-Math.PI/2; ar.position.set(0,Math.max(.58,H*.95),-Math.max(.3,m.h*.26)); g.add(ar);
+    const tail=new THREE.Mesh(new THREE.BoxGeometry(.05,.05,.22), new THREE.MeshBasicMaterial({color:0xe8b862,transparent:true}));
+    tail.position.set(0,Math.max(.58,H*.95),-Math.max(.3,m.h*.26)+.24); g.add(tail);
+  }
+  if(inval&&inval.has(idx))g.add(overlayBox3(m.w,m.h,H,0xc65b48,.3));
+  if(interactive&&idx===selIdx){ g.add(overlayBox3(m.w,m.h,H,0xd23b2f,.28)); // in-game red selection tint
+    const s=labelSprite3(m.n); s.position.y=H+.55; g.add(s); }
+  g.rotation.y=-(p.r||0)*Math.PI/2;
+  g.position.set(p.x+we/2-GRID_W/2, layerY(p.l), p.y+he/2-GRID_H/2);
+  g.userData={idx,l:p.l};
+  return g;
+}
+function buildSceneInto(v,build,activeLayer,inval,interactive){
+  if(v.buildGroup){ v.scene.remove(v.buildGroup); disposeObj(v.buildGroup); }
+  const G=new THREE.Group(); v.buildGroup=G; v.modMeshes=[];
+  if(build.chassis){ const cm=chassisMesh3(build); cm.userData={l:1,chassis:true}; G.add(cm); }
+  build.mods.forEach((p,idx)=>{ const mm=moduleMesh3(p,idx,activeLayer,inval,interactive); G.add(mm); v.modMeshes.push(mm); });
+  doorMeshes3(build).forEach(dg=>G.add(dg));
+  G.children.forEach(ch=>{
+    const l=ch.userData?ch.userData.l:undefined; let op=1;
+    if(activeLayer>0&&l!==undefined&&!ch.userData.chassis) op = l===activeLayer?1:(l<activeLayer?.55:(showUpper?.15:0.001));
+    if(activeLayer>1&&ch.userData&&ch.userData.chassis) op=.6;
+    ch.traverse(n=>{ if(n.material){ if(n.userData.baseOp===undefined)n.userData.baseOp=(n.material.opacity!==undefined&&n.material.transparent)?n.material.opacity:1;
+      n.material.transparent=true; n.material.opacity=n.userData.baseOp*op; } });
+  });
+  if(interactive){
+    if(!v.layerGrid){ v.layerGrid=new THREE.GridHelper(GRID_W,GRID_W,0xc9963c,0x5d4a30);
+      v.layerGrid.material.transparent=true; v.layerGrid.material.opacity=.4; v.scene.add(v.layerGrid); }
+    v.layerGrid.position.y=layerY(activeLayer)+.02;
+  }
+  v.scene.add(G); v.updateCam(); v.render();
+}
+/* ---- editor wiring ---- */
+function attachOrbit(v,onClick,onMove){
+  const el=v.renderer.domElement; const orb={drag:false,moved:0,x:0,y:0};
+  el.addEventListener('mousedown',e=>{ if(e.button===2||e.button===1){ orb.drag=true; orb.moved=0; orb.x=e.clientX; orb.y=e.clientY; e.preventDefault(); } });
+  window.addEventListener('mouseup',()=>{ orb.drag=false; });
+  el.addEventListener('mousemove',e=>{
+    if(orb.drag){ const dx=e.clientX-orb.x, dy=e.clientY-orb.y; orb.x=e.clientX; orb.y=e.clientY; orb.moved+=Math.abs(dx)+Math.abs(dy);
+      v.yaw+=dx*.008; v.pitch=Math.max(.3,Math.min(1.5,v.pitch+dy*.005)); v.updateCam(); v.render(); return; }
+    if(onMove)onMove(e); });
+  el.addEventListener('contextmenu',e=>e.preventDefault());
+  el.addEventListener('wheel',e=>{ e.preventDefault();
+    v.zoom=Math.max(.5,Math.min(3.2,v.zoom*(e.deltaY<0?1.12:.9))); v.updateCam(); v.render(); },{passive:false});
+  if(onClick)el.addEventListener('click',e=>{ if(orb.moved>4){orb.moved=0;return;} onClick(e); });
+}
+function pickModule(v,e){
+  _ray.setFromCamera(ndc3(v,e),v.cam);
+  const hits=_ray.intersectObjects(v.modMeshes||[],true);
+  for(const h of hits){ let o=h.object;
+    while(o&&o.userData.idx===undefined)o=o.parent;
+    if(o&&o.userData.idx!==undefined)return o.userData.idx; }
+  return -1;
+}
+function hideGhost(){ if(edView&&edView.ghost){ edView.scene.remove(edView.ghost); disposeObj(edView.ghost); edView.ghost=null; edView.lastP=null; edView.render(); } }
+function hoverGhost(e){
+  const pt=pickPoint(edView,e,layerY(edLayer)); if(!pt){ hideGhost(); setReason(''); return; }
+  const m=MODIX[palSel]; const [we,he]=(m.c==='chassis')?[m.w,m.h]:effWH(m,previewRot);
+  let gx=Math.round(pt.x+GRID_W/2-we/2), gy=Math.round(pt.z+GRID_H/2-he/2);
+  gx=Math.max(0,Math.min(GRID_W-we,gx)); gy=Math.max(0,Math.min(GRID_H-he,gy));
+  const p={m:palSel,x:gx,y:gy,l:edLayer,r:previewRot};
+  const bad = m.c==='chassis'? null : validatePlacement(cur,p);
+  const key=palSel+':'+previewRot+':'+(m.c==='chassis');
+  if(!edView.ghost||edView.ghostKey!==key){
+    if(edView.ghost){ edView.scene.remove(edView.ghost); disposeObj(edView.ghost); }
+    const gg=(m.c==='chassis')?new THREE.Group():lowPolyModule(m);
+    if(m.c==='chassis')B3(gg,m.w,.2,m.h,'#8b7856',0,.1,0);
+    const H=m.c==='chassis'?.2:Math.max(.18,modH(m)/34);
+    edView.ghostOv=overlayBox3(m.c==='chassis'?m.w:m.w, m.c==='chassis'?m.h:m.h, H, 0x7da05a, .22);
+    gg.add(edView.ghostOv);
+    gg.traverse(n=>{ if(n.material){ n.material.transparent=true; n.material.opacity=(n.userData.baseOp||1)*.6; } });
+    gg.rotation.y=(m.c==='chassis')?0:-(previewRot||0)*Math.PI/2;
+    edView.ghost=gg; edView.ghostKey=key; edView.scene.add(gg);
+  }
+  edView.ghostOv.material.color.set(bad?0xc65b48:0x7da05a);
+  edView.ghost.position.set(gx+we/2-GRID_W/2, layerY(edLayer), gy+he/2-GRID_H/2);
+  edView.lastP=p; edView.lastBad=bad;
+  setReason(bad?'✘ '+bad:(m.c==='chassis'?'Click to set chassis position':'✔ Legal placement — doors connect automatically'),!bad);
+  edView.render();
+}
+function hoverTip(e){
+  const tip=edView.tip; if(!tip)return;
+  const idx=pickModule(edView,e);
+  if(idx<0){ tip.style.display='none'; return; }
+  const m=MODIX[cur.mods[idx].m];
+  tip.textContent=m.n+' · '+m.w+'×'+m.h+' · Tier '+m.t;
+  const r=edView.container.getBoundingClientRect();
+  tip.style.left=(e.clientX-r.left+14)+'px'; tip.style.top=(e.clientY-r.top+8)+'px'; tip.style.display='block';
+}
+function editorClick(e){
+  if(palSel){
+    hoverGhost(e); const p=edView.lastP; if(!p)return;
+    const m=MODIX[palSel];
+    if(m.c==='chassis'){ snap(); cur.chassis=m.i;
+      cur.cx=Math.min(Math.max(0,p.x),GRID_W-m.w); cur.cy=Math.min(Math.max(0,p.y),GRID_H-m.h);
+      toast('Chassis set: '+m.n); palSel=null; hideGhost(); setReason(''); renderPalette(); renderEditor(); return; }
+    if(edView.lastBad){ toast('✘ '+edView.lastBad); return; }
+    let rr=p.r;
+    if(needsFacing(m)&&m.w===m.h&&(previewRot%4)===0)rr=bestFacing(cur,p); // auto-orient attachments outward
+    snap();
+    cur.mods.push({m:p.m,x:p.x,y:p.y,l:p.l,r:rr}); renderEditor(); return;
+  }
+  const idx=pickModule(edView,e);
+  selIdx=(idx===selIdx)?-1:idx;
+  renderEditor();
+}
+function ensureEdView(){
+  const grid=document.getElementById('grid');
+  if(edView&&edView.container===grid)return;
+  grid.classList.add('gl');
+  const W=grid.clientWidth||760;
+  edView=makeView(grid,W,560,false);
+  const tip=document.createElement('div'); tip.className='t3tip'; grid.style.position='relative'; grid.appendChild(tip); edView.tip=tip;
+  attachOrbit(edView,editorClick,(e)=>{ if(palSel)hoverGhost(e); else hoverTip(e); });
+  edView.renderer.domElement.addEventListener('mouseleave',()=>{ hideGhost(); if(edView.tip)edView.tip.style.display='none'; });
+  window.addEventListener('resize',()=>{ if(edView&&document.getElementById('page-editor').classList.contains('visible'))edView.resize(grid.clientWidth||760,560); });
+}
+function renderEditor(){
+  if(!cur)return;
+  if(!T3.ok){ renderEditorLegacy(); return; }
+  renderLayerBtns();
+  ensureEdView();
+  if(!palSel)hideGhost();
+  const fitKey=cur.chassis+':'+cur.cx+','+cur.cy;
+  if(cur.chassis&&edView.fittedFor!==fitKey){ edView.fittedFor=fitKey; fitViewTo(edView,cur); }
+  buildSceneInto(edView,cur,edLayer,validateAll(cur),true);
+  document.getElementById('ed-mode').textContent = palSel? '· placing: '+MODIX[palSel].n : (selIdx>=0&&cur.mods[selIdx]? '· selected: '+MODIX[cur.mods[selIdx].m].n : '');
+  if(!palSel)setReason('');
+  renderStats();
+}
+function renderDetailViewer(){
+  const b=findBuild(detailId); if(!b)return;
+  if(!T3.ok){ renderDetailViewerLegacy(); return; }
+  const lb=document.getElementById('d-layers'); lb.innerHTML='';
+  const mk=(l,txt)=>{ const bt=document.createElement('button'); bt.textContent=txt;
+    if(l===dLayer)bt.classList.add('active');
+    bt.onclick=()=>{ dLayer=l; renderDetailViewer(); }; lb.appendChild(bt); };
+  mk(0,'All decks');
+  for(let l=1;l<=LAYERS;l++)mk(l,'Deck '+l+' ('+b.mods.filter(m=>m.l===l).length+')');
+  const dg=document.getElementById('d-grid');
+  dg.style.background='transparent'; dg.style.border='none'; dg.style.width='100%'; dg.style.minHeight='420px';
+  if(!detailView||detailView.container!==dg){
+    detailView=makeView(dg,dg.clientWidth||520,420,false);
+    attachOrbit(detailView,null,null);
+  }
+  fitViewTo(detailView,b);
+  buildSceneInto(detailView,b,dLayer,validateAll(b),false);
+}
+function drawThumb(b,W,H){
+  if(!T3.ok){ return drawThumbFlat(b,W,H); }
+  const sig=b.id+'|'+b.chassis+'|'+b.cx+','+b.cy+'|'+JSON.stringify(b.mods);
+  let url=thumbCache.get(sig);
+  if(!url){
+    if(!thumbView){ thumbView=makeView(null,272,158,true); }
+    fitViewTo(thumbView,b);
+    buildSceneInto(thumbView,b,0,new Map(),false);
+    url=thumbView.renderer.domElement.toDataURL();
+    thumbCache.set(sig,url);
+  }
+  const img=new Image(); img.src=url; img.style.cssText='width:100%;height:100%;object-fit:cover';
+  return img;
+}
+/* ================= end 3D engine ================= */
+
+function deleteSel(){ if(selIdx>=0){ snap(); cur.mods.splice(selIdx,1); selIdx=-1; renderEditor(); } }
+function clearLayer(){ if(!cur)return; snap(); cur.mods=cur.mods.filter(m=>m.l!==edLayer); selIdx=-1; renderEditor(); }
+
+document.addEventListener('keydown',(ev)=>{
+  if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;
+  const k=(ev.key||'').toLowerCase();
+  const inEditor=document.getElementById('page-editor').classList.contains('visible');
+  if(k==='t')rotateSel();                                   // rotate part
+  if(k==='r'&&inEditor){ edLayer=Math.min(LAYERS,edLayer+1); renderEditor(); } // floor up (in-game R)
+  if(k==='f'&&inEditor){ edLayer=Math.max(1,edLayer-1); renderEditor(); }      // floor down (in-game F)
+  if(k==='z'&&inEditor)undo();
+  if(k==='y'&&inEditor)redo();
+  if(k==='g'&&inEditor)toggleUpper();
+  if(ev.key==='Tab'&&inEditor){ ev.preventDefault(); togglePalette(); }
+  if(ev.key==='Escape'){ palSel=null; selIdx=-1; renderPalette(); renderEditor(); }
+  if(ev.key==='Delete'||k==='x')deleteSel();
+  if(k==='c'&&cur&&selIdx>=0){ palSel=cur.mods[selIdx].m; previewRot=cur.mods[selIdx].r||0; selIdx=-1;
+    renderPalette(); renderEditor(); toast('Part copied — click the deck to place'); }
+  if(k==='q')rotCam(-1);
+  if(k==='e')rotCam(1);
+  if('wasd'.includes(k)&&inEditor&&typeof edView!=='undefined'&&edView){ // camera pan like movement keys
+    const st=.55, ca=Math.cos(edView.yaw), sa=Math.sin(edView.yaw);
+    if(k==='w'){ edView.target.x-=ca*st; edView.target.z-=sa*st; }
+    if(k==='s'){ edView.target.x+=ca*st; edView.target.z+=sa*st; }
+    if(k==='a'){ edView.target.x-=sa*st; edView.target.z+=ca*st; }
+    if(k==='d'){ edView.target.x+=sa*st; edView.target.z-=ca*st; }
+    edView.updateCam(); edView.render();
+  }
+  if(['1','2','3'].includes(ev.key)){ edLayer=+ev.key; renderEditor(); }
+});
+
+/* ============================= STATS ============================= */
+function computeStats(b){
+  const s={weight:0,euse:0,pow:0,crew:0,captain:0,cargo:0,turrets:0,hp:0,cost:0,metal:0,comp:0,
+           reactors:0,steering:0,entrance:0,crewMods:0,nodes:{},tierMax:1,cap:0,spd:0,base:0,floating:0};
+  if(b.chassis){ const ch=MODIX[b.chassis];
+    s.cap=ch.cap; s.euse+=ch.e||0; s.weight+=ch.wt;
+    s.nodes[ch.nd]=Math.max(s.nodes[ch.nd]||0,ch.t); s.tierMax=Math.max(s.tierMax,ch.t);
+    s.base = ch.cap<=20000?13 : ch.cap<=28000?11.5 : ch.cap<=40000?10 : 8.5;
+    if(ch.i.startsWith('ch_kf')) s.base+=0.5;
+    s.cost += Math.round(ch.cap*0.15/10)*10; s.metal+=Math.round(ch.cap/40); s.comp+=ch.t*4;
+  }
+  b.mods.forEach(p=>{
+    const m=MODIX[p.m];
+    s.weight+=m.wt; s.euse+=m.e||0; s.pow+=m.pow||0; s.crew+=m.crew||0; s.captain+=m.capn||0;
+    s.cargo+=m.slots||0; s.turrets+=m.turret||0; s.hp+=m.hp||0; s.spd+=m.spd||0;
+    s.cost+=Math.round((m.wt*0.9+m.t*400+(m.hp||0)*0.12)/10)*10;
+    s.metal+=Math.round(m.wt/12); s.comp+=m.t*3;
+    s.nodes[m.nd]=Math.max(s.nodes[m.nd]||0,m.t); s.tierMax=Math.max(s.tierMax,m.t);
+    if(m.c==='reactor')s.reactors++;
+    if(m.c==='steering')s.steering++;
+    if(m.c==='crew'&&m.crew)s.crewMods++;
+    if(m.ent)s.entrance++;
+    if(p.l>1){ // support check: needs any module or chassis cell on layer below
+      const below=cellsOf(p).some(([x,y])=> b.mods.some(q=>q.l===p.l-1&&cellsOf(q).some(([a,c])=>a===x&&c===y)) || (p.l===2&&false));
+      if(!below&&p.l>1){
+        const onDeck1=p.l===2&&b.chassis&&cellsOf(p).some(([x,y])=>{const ch=MODIX[b.chassis];return x>=b.cx&&x<b.cx+ch.w&&y>=b.cy&&y<b.cy+ch.h;});
+        if(!onDeck1)s.floating++;
+      }
+    }
+  });
+  if(s.base){ const lf=s.cap?Math.min(1.4,s.weight/s.cap):1;
+    s.speed=Math.max(0,(s.base*(1.25-0.65*lf))+s.spd);
+    if(s.weight>s.cap)s.speed=0;
+  } else s.speed=0;
+  return s;
+}
+function checkRow(ok,label,detail,warnOnly){
+  const cls = ok===true?'ok':(warnOnly?'warn-t':'no');
+  const icon = ok===true?'✔':(warnOnly?'⚠':'✘');
+  return `<div class="row"><span class="${cls}">${icon}</span><span>${label}${detail?' <span style="color:var(--dim)">— '+detail+'</span>':''}</span></div>`;
+}
+function statsHTML(b,s,compact){
+  const bar=(v,max,unit)=>{ const pct=max?Math.min(100,v/max*100):0;
+    return `<div class="bar"><i class="${v>max?'over':''}" style="width:${pct}%"></i></div><div class="statrow"><span>${unit}</span><b style="color:${v>max?'var(--red)':'var(--sand)'}">${fmt(Math.round(v))} / ${fmt(max)}</b></div>`; };
+  let h='';
+  const conn=connectivity(b);
+  if(!compact){
+    const chn=b.chassis?MODIX[b.chassis].n:'—';
+    const inval=validateAll(b);
+    h+=`<div class="check">
+      ${checkRow(!!b.chassis,'Chassis',b.chassis?chn:'required')}
+      ${checkRow(s.reactors===1,'Motor-Reactor',s.reactors+' placed (rule: exactly 1)',s.reactors>1)}
+      ${checkRow(s.steering===1,'Fly Bridge / Steering',s.steering+' placed (rule: exactly 1)',s.steering>1)}
+      ${checkRow(s.captain===1,"Captain's Compartment",s.captain+' placed (rule: exactly 1)',s.captain>1)}
+      ${checkRow(s.entrance>=1,'Valid Entrance Area',s.entrance+' placed (need ≥1)')}
+      ${checkRow(conn.hasEntry&&conn.unreachable.length===0,'Doors & access',conn.hasEntry?(conn.unreachable.length? conn.unreachable.length+' compartment(s) not connected to the entrance':'all '+conn.total+' compartments connected'):'needs an entrance first')}
+    </div>`;
+    const warns=[];
+    if(s.crewMods>3)warns.push('⚠ Build rules allow max 3 crew compartments ('+s.crewMods+' placed)');
+    if(s.cap&&s.weight>s.cap)warns.push('⚠ OVERLOADED — trampler cannot walk');
+    if(s.pow&&s.euse>s.pow)warns.push('⚠ Energy demand exceeds rated reactor power — systems will stall');
+    inval.forEach((reason,idx)=>{ warns.push('⚠ '+esc(MODIX[b.mods[idx].m].n)+' (deck '+b.mods[idx].l+'): '+esc(reason)); });
+    if(warns.length)h+=`<div class="warns">${warns.join('<br>')}</div>`;
+  } else {
+    h+=`<div class="statrow"><span>Doors & access</span><b style="color:${conn.hasEntry&&!conn.unreachable.length?'var(--green)':'var(--red)'}">${conn.hasEntry?(conn.unreachable.length? conn.unreachable.length+' unreachable':'all connected'):'no entrance'}</b></div>`;
+  }
+  h+=`<div><div class="sect-t">Load &amp; Power</div>
+    ${bar(s.weight,s.cap||1,'Weight (kg)')}
+    ${bar(s.euse,s.pow||1,'Energy use / rated power')}</div>`;
+  h+=`<div><div class="sect-t">Performance</div>
+    <div class="statrow"><span>Est. terrain speed</span><b>${s.speed?s.speed.toFixed(1)+' km/h':'—'}</b></div>
+    <div class="statrow"><span>Combined hit points</span><b>${fmt(s.hp)}</b></div>
+    <div class="statrow"><span>Turret mounts</span><b>${s.turrets}</b></div>
+    <div class="statrow"><span>Crew beds (+captain)</span><b>${s.crew} + ${s.captain}</b></div>
+    <div class="statrow"><span>Cargo item slots</span><b>${fmt(s.cargo)}</b></div>
+    <div class="statrow"><span>Parts placed</span><b>${b.mods.length}</b></div></div>`;
+  h+=`<div><div class="sect-t">Estimated build cost</div>
+    <div class="statrow"><span>Crowns</span><b>👑 ${fmt(s.cost)}</b></div>
+    <div class="statrow"><span>Metal / Components</span><b>${fmt(s.metal)} / ${fmt(s.comp)}</b></div>
+    <div style="color:var(--dim);font-size:10.5px;margin-top:3px">Estimates from datamined weights — Early Access values shift between patches.</div></div>`;
+  const nodes=Object.entries(s.nodes).sort((a,b2)=>a[1]-b2[1]);
+  h+=`<div><div class="sect-t">Required tech tree research</div><div class="tech-list" style="margin-top:6px">
+    ${nodes.length?nodes.map(([n,t])=>`<div class="tech-item"><span>${esc(n)}</span><span class="tier-b t${t}">Tier ${t}</span></div>`).join(''):'<span style="color:var(--dim);font-size:12px">Nothing placed yet.</span>'}
+    </div></div>`;
+  return h;
+}
+function renderStats(){
+  if(!cur)return;
+  const s=computeStats(cur);
+  const conn=connectivity(cur), inval=validateAll(cur);
+  const upperW=cur.mods.filter(p=>p.l>1).reduce((a,p)=>a+MODIX[p.m].wt,0);
+  const loadPct=s.cap? Math.min(1.3,s.weight/s.cap):0;
+  const topSpeed=s.base&&s.speed? Math.round(s.speed/s.base*100):(cur.chassis?100:0);
+  const maneuver=cur.chassis? Math.max(0,Math.min(100,Math.round(100-loadPct*70+s.spd*8-s.turrets*2))):0;
+  const stab=s.weight>1? Math.min(100,Math.round(upperW/s.weight*120)):0;
+  const engines=cur.mods.filter(p=>MODIX[p.m].c==='engine').length;
+  const bar=(v,mx,red)=>`<div class="gs-bar"><b class="${red?'red':''}" style="width:${Math.max(0,Math.min(100,v/Math.max(1,mx)*100))}%"></b></div>`;
+  const gr=(lb,val)=>`<div class="gs-r"><span>${lb}</span><b>${val}</b></div>`;
+  let h=`<div class="bp-name"><span class="nm">${esc(cur.name||'Unnamed Trampler')}</span><button title="Rename" onclick="renameBp()">✎</button></div>`;
+  h+='<div class="gstat">';
+  h+=gr('Maneuverability',maneuver)+bar(maneuver,100);
+  h+=gr('Energy Efficiency',(s.pow?Math.max(0,s.pow-s.euse)+' spare':'—'))+bar(s.pow?Math.max(0,s.pow-s.euse):0,s.pow,s.euse>s.pow);
+  h+=gr('Weight',fmt(s.weight)+' / '+fmt(s.cap||0))+bar(s.weight,s.cap,s.weight>s.cap);
+  h+=gr('Stability Impact',stab+'%')+bar(stab,100,stab>60);
+  h+=gr('Top Speed',topSpeed+'%')+bar(topSpeed,120);
+  h+='</div>';
+  h+=`<div class="cgrid">
+    <div class="cg">🛏 <div><b>${s.crew+s.captain}</b> Crew</div></div>
+    <div class="cg">⚔ <div><b>${s.turrets}</b> Guns</div></div>
+    <div class="cg">📦 <div><b>${fmt(s.cargo)}</b> Cargo</div></div>
+    <div class="cg">⚙ <div><b>${engines}</b> Engines</div></div></div>`;
+  h+=`<div class="sect-t">Building cost (est.)</div>
+    <div class="statrow"><span>👑 Crowns</span><b>${fmt(s.cost)}</b></div>
+    <div class="statrow"><span>🔩 Metal · ⚙ Components</span><b>${fmt(s.metal)} · ${fmt(s.comp)}</b></div>`;
+  const nodes=Object.entries(s.nodes).sort((a,b2)=>a[1]-b2[1]);
+  h+=`<div class="sect-t" style="margin-top:8px">Required research</div><div class="tech-list" style="margin-top:6px">${nodes.map(([n,t])=>`<div class="tech-item"><span>${esc(n)}</span><span class="tier-b t${t}">Tier ${t}</span></div>`).join('')||'—'}</div>`;
+  document.getElementById('stats-body').innerHTML=h;
+  renderVpCheck(s,conn,inval);
+  renderPartCard();
+  const fh=document.getElementById('floor-hint'); if(fh)fh.textContent='Floor '+edLayer+' / '+LAYERS;
+}
+function renameBp(){ const v=prompt('Blueprint name:',cur.name||''); if(v===null)return;
+  cur.name=v.trim(); const inp=document.getElementById('b-name'); if(inp)inp.value=cur.name; renderStats(); }
+function renderVpCheck(s,conn,inval){
+  const el=document.getElementById('vp-check'); if(!el)return;
+  const ds=el.dataset||{};
+  const coreRows=[[!!cur.chassis,'Chassis'],[s.reactors===1,'Motor-Reactor'],[s.steering===1,'Fly Bridge (steering)'],[s.captain===1,"Captain's Compartment"],[s.entrance>=1,'Valid Entrance']];
+  const okN=coreRows.filter(r=>r[0]).length;
+  const warns=[];
+  if(s.crewMods>3)warns.push('Max 3 crew compartments ('+s.crewMods+')');
+  if(s.cap&&s.weight>s.cap)warns.push('Overloaded — trampler cannot walk');
+  if(s.pow&&s.euse>s.pow)warns.push('Energy demand exceeds reactor power');
+  if(conn.hasEntry&&conn.unreachable.length)warns.push(conn.unreachable.length+' compartment(s) not connected to the entrance');
+  if(!conn.hasEntry&&conn.total)warns.push('No entrance — crew cannot board');
+  turretObstructions(cur).forEach(i=>warns.push(MODIX[cur.mods[i].m].n+': firing arc obstructed by the deck above'));
+  inval.forEach((r,idx)=>warns.push(MODIX[cur.mods[idx].m].n+': '+r));
+  const openCore=ds.core!=='0', openRel=ds.rel==='1'||warns.length>0;
+  el.innerHTML=`
+   <div class="vp-sec core ${openCore?'open':''}"><div class="vs-h" data-k="core"><span>◔ Core components</span><span class="cnt" style="color:${okN===5?'#7da05a':'#4aa3d8'}">${okN}/5</span></div>
+     <div class="vs-b">${coreRows.map(([ok,lb])=>`<div class="row"><span style="color:${ok?'#7da05a':'#c65b48'}">${ok?'✔':'✘'}</span>${lb}</div>`).join('')}</div></div>
+   <div class="vp-sec rel ${openRel?'open':''}"><div class="vs-h" data-k="rel"><span>◔ Reliability</span><span class="cnt" style="color:${warns.length?'#e8912b':'#7da05a'}">${warns.length?'⚠ '+warns.length:'OK'}</span></div>
+     <div class="vs-b">${warns.map(w=>`<div class="row"><span style="color:#e8912b">⚠</span><span>${esc(w)}</span></div>`).join('')||'<div class="row">No construction warnings.</div>'}</div></div>
+   <button class="save-exit" onclick="saveAndExit()">Save and Exit</button>`;
+  el.querySelectorAll('.vs-h').forEach(hd=>hd.onclick=()=>{ const sec=hd.parentNode; sec.classList.toggle('open');
+    if(el.dataset)el.dataset[hd.dataset.k]=sec.classList.contains('open')?'1':'0'; });
+}
+function renderPartCard(){
+  const el=document.getElementById('vp-card'); if(!el)return;
+  let m=null, placing=false;
+  if(palSel){ m=MODIX[palSel]; placing=true; }
+  else if(selIdx>=0&&cur&&cur.mods[selIdx])m=MODIX[cur.mods[selIdx].m];
+  if(!m){ el.style.display='none'; return; }
+  const crowns=Math.round((m.wt*.9+m.t*400+(m.hp||0)*.12)/10)*10;
+  const pbar=(v,mx)=>`<i><b style="width:${Math.max(3,Math.min(100,v/Math.max(1,mx)*100))}%"></b></i>`;
+  el.innerHTML=`<div class="pc-h"><div class="pc-cat">${CAT_LABEL[m.c]||m.c}${placing?' · placing':' · selected'}</div><div class="pc-n">${esc(m.n)}</div></div>
+   <div class="pc-b"><div class="pc-dim">Dimensions ${m.w}x${m.h} · Tier ${m.t} · ${esc(m.nd)}</div>
+   <div class="pcstat"><span>HP</span>${pbar(m.hp||0,12500)}<em style="width:46px;text-align:right;font-style:normal">${m.hp?fmt(m.hp):'—'}</em></div>
+   <div class="pcstat"><span>Weight</span>${pbar(m.wt,5500)}<em style="width:46px;text-align:right;font-style:normal">${m.wt>1?fmt(m.wt):'—'}</em></div>
+   <div class="pcstat"><span>Energy</span>${pbar(m.pow||m.e||0,m.pow?100:12)}<em style="width:46px;text-align:right;font-style:normal">${m.pow?('+'+m.pow):(m.e||0)}</em></div>
+   ${m.cap?`<div class="pcstat"><span>Capacity</span>${pbar(m.cap,64000)}<em style="width:46px;text-align:right;font-style:normal">${fmt(m.cap)}</em></div>`:''}
+   ${m.slots?`<div class="pcstat"><span>Item slots</span>${pbar(m.slots,288)}<em style="width:46px;text-align:right;font-style:normal">${m.slots}</em></div>`:''}
+   ${m.crew?`<div class="pcstat"><span>Crew beds</span>${pbar(m.crew,4)}<em style="width:46px;text-align:right;font-style:normal">${m.crew}</em></div>`:''}
+   <div class="pc-cost">Cost: 👑 ${fmt(crowns)} · 🔩 ${Math.round(m.wt/12)} · ⚙ ${m.t*3}</div></div>`;
+  el.style.display='block';
+}
+function saveAndExit(){
+  const inp=document.getElementById('b-name');
+  cur.name=(inp&&inp.value?inp.value:cur.name||'').trim();
+  if(!cur.name){ renameBp(); if(!cur.name)return; }
+  if(inp)inp.value=cur.name;
+  saveCurrent();
+  if(cur.name)showPage('browse');
+}
+
+/* ============================= SAVE / SHARE ============================= */
+function saveCurrent(){
+  cur.name=document.getElementById('b-name').value.trim();
+  cur.cat=document.getElementById('b-cat').value;
+  if(!cur.name){ toast('Give your blueprint a name first'); document.getElementById('b-name').focus(); return; }
+  if(!cur.author){ const u=prompt('Your raider name (shown as author):','Raider'); if(u===null) return; cur.author=u||'Raider'; localStorage.setItem(LS_USER,cur.author); }
+  const idx=builds.findIndex(b=>b.id===cur.id);
+  if(idx>=0) builds[idx]=JSON.parse(JSON.stringify(cur));
+  else builds.unshift(JSON.parse(JSON.stringify(cur)));
+  persist(); toast('Build saved to library ✔');
+}
+function encodeBuild(b){
+  const min={n:b.name,c:b.cat,a:b.author,d:b.desc,ch:b.chassis,cx:b.cx,cy:b.cy,m:b.mods.map(p=>[p.m,p.x,p.y,p.l,p.r||0])};
+  return 'TRMP1.'+btoa(unescape(encodeURIComponent(JSON.stringify(min))));
+}
+function decodeBuild(code){
+  code=code.trim(); if(!code.startsWith('TRMP1.')) throw 'bad prefix';
+  const min=JSON.parse(decodeURIComponent(escape(atob(code.slice(6)))));
+  return { id:'u'+Date.now(), name:min.n||'Imported build', cat:BUILD_CATS.includes(min.c)?min.c:'Solo',
+    author:min.a||'Unknown', desc:min.d||'', chassis:MODIX[min.ch]?min.ch:null, cx:min.cx|0, cy:min.cy|0,
+    mods:(min.m||[]).filter(a=>MODIX[a[0]]).map(a=>({m:a[0],x:a[1]|0,y:a[2]|0,l:Math.max(1,Math.min(LAYERS,a[3]|0)),r:(a[4]|0)%4})),
+    created:new Date().toISOString().slice(0,10), ratings:[], comments:[] };
+}
+function shareCurrent(){
+  cur.name=document.getElementById('b-name').value.trim()||cur.name||'Unnamed';
+  copyText(encodeBuild(cur)); toast('Build code copied — paste it anywhere to share');
+}
+function shareDetail(){ const b=findBuild(detailId); if(b){ copyText(encodeBuild(b)); toast('Build code copied ✔'); } }
+function copyText(t){
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).catch(()=>fallbackCopy(t));
+  else fallbackCopy(t);
+}
+function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} ta.remove(); }
+function promptImport(){
+  const code=prompt('Paste a Trampler build code (starts with TRMP1.):');
+  if(!code)return;
+  try{ const b=decodeBuild(code); builds.unshift(b); persist(); showPage('browse'); openDetail(b.id); toast('Build imported ✔'); }
+  catch(e){ toast('Could not read that code — check it and try again'); }
+}
+
+/* ============================= BROWSE ============================= */
+let catFilter='All';
+function renderChips(){
+  const el=document.getElementById('cat-chips'); el.innerHTML='';
+  ['All',...BUILD_CATS].forEach(c=>{ const b=document.createElement('button');
+    b.className='chip'+(catFilter===c?' active':''); b.textContent=c;
+    b.onclick=()=>{ catFilter=c; renderChips(); renderBrowse(); }; el.appendChild(b); });
+}
+function avgRating(b){ return b.ratings.length? b.ratings.reduce((a,c)=>a+c,0)/b.ratings.length : 0; }
+function starsHTML(v,n){
+  let h='<span class="stars">';
+  for(let i=1;i<=5;i++)h+=`<span class="${i<=Math.round(v)?'':'off'}">★</span>`;
+  h+='</span>';
+  if(n!==undefined)h+=` <span style="color:var(--dim);font-size:11.5px">${v?v.toFixed(1):'–'} (${n})</span>`;
+  return h;
+}
+function renderBrowse(){
+  renderChips();
+  if(typeof renderSrcChips==='function')renderSrcChips();
+  if(srcMode==='community'&&cloudOn()){
+    paintCards(cloudBuilds);
+    loadCommunity().then(list=>{ cloudBuilds=list; if(srcMode==='community')paintCards(list); });
+    return;
+  }
+  paintCards(builds);
+}
+function paintCards(source){
+  const el=document.getElementById('cards'); el.innerHTML='';
+  let list=source.filter(b=>catFilter==='All'||b.cat===catFilter);
+  const sort=document.getElementById('sort-sel').value;
+  if(sort==='rating')list.sort((a,b)=>avgRating(b)-avgRating(a));
+  if(sort==='new')list.sort((a,b)=>(b.created||'').localeCompare(a.created||''));
+  if(sort==='comments')list.sort((a,b)=>b.comments.length-a.comments.length);
+  if(sort==='cost')list.sort((a,b)=>computeStats(a).cost-computeStats(b).cost);
+  if(!list.length){ el.innerHTML='<div class="empty-note">'+(srcMode==='community'?'No community builds in this category yet — be the first to publish one!':'No local builds in this category yet — build one in the editor.')+'</div>'; return; }
+  list.forEach(b=>{
+    const s=computeStats(b);
+    const card=document.createElement('div'); card.className='card'; card.onclick=()=>openDetail(b.id);
+    const thumb=document.createElement('div'); thumb.className='thumb';
+    thumb.innerHTML=`<span class="cat-badge">${esc(b.cat)}</span>`;
+    thumb.appendChild(drawThumb(b,272,158));
+    card.appendChild(thumb);
+    const body=document.createElement('div'); body.className='body';
+    body.innerHTML=`<h3>${esc(b.name)}</h3><div class="by">by ${esc(b.author)} · ${esc(b.created||'')}</div>
+      <div style="margin-bottom:7px">${starsHTML(avgRating(b),b.ratings.length)}</div>
+      <div class="meta"><span>👑 ${fmt(s.cost)}</span><span>⚖ ${fmt(s.weight)} kg</span><span>🛏 ${s.crew+s.captain}</span><span>⚔ ${s.turrets}</span><span>💬 ${b.comments.length}</span><span class="tier-b t${s.tierMax}">Tier ${s.tierMax}</span></div>`;
+    card.appendChild(body); el.appendChild(card);
+  });
+}
+function drawThumbFlat(b,W,H){
+  // fallback mini-isometric rendering (no WebGL)
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+  const cell=12, k=0.82, sq=0.5;
+  const setL=(l)=>ctx.setTransform(k,k*sq,-k,k*sq, W/2, H/2+16-(l)*11);
+  const rect=(gx,gy,w,h,fill,stroke)=>{
+    ctx.fillStyle=fill; ctx.fillRect((gx-GRID_W/2)*cell,(gy-GRID_H/2)*cell,w*cell,h*cell);
+    if(stroke){ ctx.strokeStyle=stroke; ctx.strokeRect((gx-GRID_W/2)*cell+.5,(gy-GRID_H/2)*cell+.5,w*cell,h*cell); } };
+  setL(0);
+  if(b.chassis){ const ch=MODIX[b.chassis];
+    rect(b.cx,b.cy,ch.w,ch.h,'rgba(201,150,60,.16)','rgba(201,150,60,.55)');
+    holeCells(b).forEach(kk=>{ const [hx,hy]=kk.split(',').map(Number); rect(hx,hy,1,1,'rgba(0,0,0,.5)'); });
+  }
+  [1,2,3].forEach(l=>{
+    setL(l);
+    b.mods.filter(p=>p.l===l).forEach(p=>{
+      const m=MODIX[p.m]; const [w,h]=effWH(m,p.r||0);
+      rect(p.x,p.y,w,h,CAT_COLORS[m.c],'rgba(0,0,0,.5)');
+    });
+  });
+  ctx.setTransform(1,0,0,1,0,0);
+  return cv;
+}
+
+/* ============================= DETAIL ============================= */
+function openDetail(id){
+  detailId=id; dLayer=0;
+  const b=builds.find(x=>x.id===id); if(!b)return;
+  document.getElementById('d-name').textContent=b.name;
+  document.getElementById('d-cat').textContent=b.cat;
+  document.getElementById('d-by').textContent='by '+b.author+' · '+(b.created||'');
+  renderDetailViewer(); renderDetailSide();
+  document.getElementById('overlay').classList.add('visible');
+}
+function closeDetail(){ document.getElementById('overlay').classList.remove('visible'); detailId=null; }
+document.getElementById('overlay').addEventListener('click',(e)=>{ if(e.target.id==='overlay')closeDetail(); });
+function renderDetailViewerLegacy(){
+  const b=findBuild(detailId); if(!b)return;
+  if(dLayer===0)dLayer=1;
+  const lb=document.getElementById('d-layers'); lb.innerHTML='';
+  for(let l=1;l<=LAYERS;l++){ const bt=document.createElement('button');
+    bt.textContent='Deck '+l+' ('+b.mods.filter(m=>m.l===l).length+')';
+    if(l===dLayer)bt.classList.add('active');
+    bt.onclick=()=>{ dLayer=l; renderDetailViewer(); }; lb.appendChild(bt); }
+  const dg=document.getElementById('d-grid');
+  dg.style.background='transparent'; dg.style.border='none';
+  renderGridInto(dg,b,dLayer,30,false,viewMode,validateAll(b));
+}
+function renderDetailSide(){
+  const b=findBuild(detailId); if(!b)return;
+  const s=computeStats(b);
+  document.getElementById('d-stars').innerHTML=starsHTML(avgRating(b),b.ratings.length);
+  document.getElementById('d-stats').innerHTML=(b.desc?`<div style="font-size:12.5px;color:#cfc0a8;margin:6px 0 10px;line-height:1.5">${esc(b.desc)}</div>`:'')+statsHTML(b,s,true);
+  const nodes=Object.entries(s.nodes).sort((a,c)=>a[1]-c[1]);
+  document.getElementById('d-tech').innerHTML=nodes.map(([n,t])=>`<div class="tech-item"><span>${esc(n)}</span><span class="tier-b t${t}">Tier ${t}</span></div>`).join('')||'—';
+  // rating widget
+  const rated=getRated(); const mine=rated[b.id]||0;
+  const rs=document.getElementById('rate-stars'); rs.innerHTML='';
+  for(let i=1;i<=5;i++){ const sp=document.createElement('span'); sp.textContent='★';
+    if(i<=mine)sp.classList.add('lit');
+    sp.onmouseenter=()=>{ [...rs.children].forEach((c,ci)=>c.classList.toggle('lit',ci<i)); };
+    sp.onmouseleave=()=>{ [...rs.children].forEach((c,ci)=>c.classList.toggle('lit',ci<mine)); };
+    sp.onclick=()=>rateBuild(b.id,i);
+    rs.appendChild(sp); }
+  // comments
+  document.getElementById('d-ccount').textContent=b.comments.length;
+  document.getElementById('d-comments').innerHTML=b.comments.map(c=>
+    `<div class="comment"><div class="ch"><b>${esc(c.by)}</b><span>${esc(c.at||'')}</span></div>${esc(c.tx)}</div>`).join('')||'<span style="color:var(--dim);font-size:12px">No comments yet.</span>';
+}
+async function rateBuild(id,v){
+  const b=findBuild(id); if(!b)return;
+  if(b.cloud){ // community rating: one per account
+    if(!cloudOn()||!sbUser){ openAuth(); return; }
+    const {error}=await sb.from('ratings').upsert({build_id:b.cloud,user_id:sbUser.id,stars:v},{onConflict:'build_id,user_id'});
+    if(error){ toast('Rating failed'); return; }
+    const rr=(await sb.from('ratings').select('stars').eq('build_id',b.cloud)).data||[];
+    b.ratings=rr.map(x=>x.stars);
+    renderDetailSide(); toast('You rated this build '+v+'★'); return;
+  }
+  const rated=getRated();
+  if(rated[id]){ const ix=b.ratings.indexOf(rated[id]); if(ix>=0)b.ratings.splice(ix,1); }
+  b.ratings.push(v); rated[id]=v;
+  localStorage.setItem(LS_RATED,JSON.stringify(rated)); persist();
+  renderDetailSide(); toast('You rated this build '+v+'★');
+}
+async function postComment(){
+  const b=findBuild(detailId); if(!b)return;
+  const tx=document.getElementById('c-text').value.trim();
+  if(!tx){ toast('Write something first'); return; }
+  if(b.cloud){
+    if(!cloudOn()||!sbUser){ openAuth(); return; }
+    const {error}=await sb.from('comments').insert({build_id:b.cloud,owner:sbUser.id,author:uname(),body:tx});
+    if(error){ toast('Comment failed'); return; }
+    b.comments.push({by:uname(),at:new Date().toISOString().slice(0,10),tx});
+    document.getElementById('c-text').value='';
+    renderDetailSide(); return;
+  }
+  const name=document.getElementById('c-name').value.trim()||localStorage.getItem(LS_USER)||'Raider';
+  localStorage.setItem(LS_USER,name);
+  b.comments.push({by:name,at:new Date().toISOString().slice(0,10),tx});
+  document.getElementById('c-text').value='';
+  persist(); renderDetailSide();
+}
+function cloneToEditor(){
+  const b=findBuild(detailId); if(!b)return;
+  cur=JSON.parse(JSON.stringify(b));
+  if(b.cloud||builds.some(x=>x.id===cur.id&&x.author!==(localStorage.getItem(LS_USER)||''))){
+    cur.id='u'+Date.now(); cur.name=b.name+' (fork)'; cur.author=localStorage.getItem(LS_USER)||''; cur.ratings=[]; cur.comments=[]; delete cur.cloud;
+  }
+  closeDetail(); edLayer=1; selIdx=-1; palSel=null;
+  showPage('editor'); syncBuildBar(); renderEditor();
+}
+
+/* ============================= ABOUT ============================= */
+document.getElementById('about-body').innerHTML=`
+<h1 style="color:var(--brass2);font-size:20px;margin-bottom:4px">Data &amp; About</h1>
+<p>Trampler Workshop is an unofficial fan tool for sharing <b>SAND: Raiders of Sophie</b> Trampler blueprints. Rebuild your design on the deck grid, check weight, power, cost and tech-tree requirements, then share it with a build code.</p>
+<h2>Where the data comes from</h2>
+<ul>
+<li>Module list, footprints, icons and core stats (weight, hit points, energy, research nodes) are based on the datamined <a href="https://probonk.com/sand-raiders-of-sophie/tramplers" target="_blank">Probonk SAND database</a>. Every module's footprint was audited against the database; parts that exist in the game files but are flagged <b>"Disabled / unused"</b> (Cruising Accelerator, NZ MAk-2 Medical Bay, S&amp;H Entrance Area, NZ AzE81L Framed Rounded reactor) are deliberately excluded, so the library only contains parts that actually appear in the in-game builder — 7 reactors, 2 engines, 9 steering compartments, 18 cargo modules, 17 chassis, matching the database counts.</li>
+<li>Build rules follow the in-game editor as documented by <a href="https://games.gg/sand-raiders-of-sophie/guides/sand-raiders-of-sophie-trampler-blueprint-guide/" target="_blank">GAMES.GG</a>, <a href="https://www.noobfeed.com/articles/sand-raiders-of-sophie-secure-entrance-trampler" target="_blank">NoobFeed</a> and Probonk's build-rules page, and are <b>enforced during placement</b>: exactly 1 Motor-Reactor, 1 steering compartment and 1 Captain's Compartment; max 3 crew compartments; interior compartments only on the chassis; entrances overlap the hull — an edge cell, hanging outside over the frame, or in the open chassis section — with a boarding ladder leading down; the Wooden Vestibule only fits the open central section of KF Well/Hole/Trench/Abyss chassis; engines mount on the hull edge; turret decks warn when the deck above obstructs their firing arc; round reactors occupy 2x1 with a keep-free drum overhang that may cross the hull edge; balconies and balcony stairs attach outside the hull (stairs need an adjacent framed compartment — in-game they show red otherwise); upper-deck parts need support below every cell.</li>
+<li>Doors are added automatically between connected compartments (brass pins in the editor); ladders connect decks automatically, and the "Doors &amp; access" check verifies every compartment can be reached from an entrance.</li>
+<li>Crown costs, material estimates and terrain speed are <b>approximations</b> derived from module weight and research tier — the game is in Early Access and values change between patches.</li>
+</ul>
+<div class="note"><b>Visual language:</b> the editor is a real-time WebGL scene (three.js) with <b>original low-poly replicas</b> of every module family — boiler-style reactor with glowing core, pilot bridge with slanted windshield, crate-stack cargo, turret rings with barrels, walker legs under the chassis, and so on. These are own designs built from primitives, not extracted game assets: the game's real meshes live in Unity Addressables (<code>walker_assets_all.bundle</code>, 1.1&nbsp;GB) and can't legally be redistributed in a web tool. Controls mirror the in-game builder (orbit, zoom, deck switching, copy shortcut, red = illegal placement). If three.js can't load (offline), the tool falls back to a flat schematic view.</div>
+<h2>Sharing, accounts &amp; storage</h2>
+<p>Without a configured backend the site runs in <b>local mode</b>: builds, ratings and comments stay in your browser, and you share builds via the <kbd>TRMP1.</kbd> build codes ("Import code"). With the community backend enabled you can create an account (email + password + username), <b>publish builds</b>, and rate/comment on other players' builds.</p>
+<h2>For the site owner: enabling the community backend</h2>
+<p>The site is static (GitHub Pages); accounts and uploaded builds live in a free <a href="https://supabase.com" target="_blank">Supabase</a> project: create a project, run the <code>supabase.sql</code> script from the repository in the SQL editor, then paste the project URL and anon key into the <code>CLOUD</code> constant at the top of the script in <code>index.html</code> and re-upload. Only legal builds (core components complete, no reliability errors) can be published.</p>
+<h2>Disclaimer</h2>
+<p>Unofficial fan project. SAND: Raiders of Sophie, its assets and names belong to their respective developers and publishers. Icon data © the game's developers, indexed by Probonk.</p>`;
+
+/* ============================= COMMUNITY BACKEND (Supabase) =============================
+   The site is static (GitHub Pages); accounts & uploaded builds live in a free Supabase project.
+   Setup: 1) supabase.com → New project (free)  2) SQL editor → run supabase.sql from this repo
+          3) Project Settings → API → paste the two values below and re-upload index.html.   */
+const CLOUD={ url:'', anon:'' };
+let sb=null, sbUser=null, cloudBuilds=[], srcMode='community';
+function cloudOn(){ return !!(CLOUD.url&&CLOUD.anon&&typeof window!=='undefined'&&window.supabase); }
+function sbInit(){
+  if(!cloudOn()){ if(!CLOUD.url)srcMode='local'; renderAuth(); return; }
+  sb=window.supabase.createClient(CLOUD.url,CLOUD.anon);
+  sb.auth.getSession().then(({data})=>{ sbUser=data&&data.session?data.session.user:null; renderAuth(); });
+  sb.auth.onAuthStateChange((_e,s)=>{ sbUser=s?s.user:null; renderAuth(); });
+}
+function uname(){ return sbUser? ((sbUser.user_metadata&&sbUser.user_metadata.username)||sbUser.email.split('@')[0]) : (localStorage.getItem(LS_USER)||''); }
+function renderAuth(){ const el=document.getElementById('auth-area'); if(!el)return;
+  if(!cloudOn()){ el.innerHTML='<span class="auth-off" title="Community backend not configured — builds are stored locally">● local mode</span>'; return; }
+  el.innerHTML = sbUser
+    ? `<span class="user-chip">👤 ${esc(uname())}</span> <button class="btn" onclick="signOut()">Sign out</button>`
+    : `<button class="btn primary" onclick="openAuth()">Sign in</button>`;
+}
+function openAuth(){ document.getElementById('auth-ov').classList.add('visible'); }
+function closeAuth(){ document.getElementById('auth-ov').classList.remove('visible'); }
+async function doAuth(mode){
+  if(!cloudOn()){ document.getElementById('au-msg').textContent='Backend not configured yet.'; return; }
+  const em=document.getElementById('au-email').value.trim(), pw=document.getElementById('au-pass').value,
+        un=document.getElementById('au-name').value.trim(), msg=document.getElementById('au-msg');
+  msg.textContent='…';
+  try{
+    if(mode==='up'){
+      if(!un){ msg.textContent='Pick a username first.'; return; }
+      const {error}=await sb.auth.signUp({email:em,password:pw,options:{data:{username:un}}});
+      if(error)throw error;
+      msg.textContent='Account created — confirm via the email we sent, then sign in.';
+    } else {
+      const {error}=await sb.auth.signInWithPassword({email:em,password:pw});
+      if(error)throw error;
+      localStorage.setItem(LS_USER,uname()); closeAuth(); toast('Signed in as '+uname());
+    }
+  }catch(e){ msg.textContent=e.message||'Failed.'; }
+}
+async function signOut(){ if(sb)await sb.auth.signOut(); toast('Signed out'); }
+async function loadCommunity(){
+  if(!cloudOn())return [];
+  try{
+    const {data,error}=await sb.from('builds').select('*').order('created_at',{ascending:false}).limit(120);
+    if(error)throw error;
+    const ids=data.map(r=>r.id);
+    let rat=[],com=[];
+    if(ids.length){
+      rat=(await sb.from('ratings').select('build_id,stars').in('build_id',ids)).data||[];
+      com=(await sb.from('comments').select('build_id,author,body,created_at').in('build_id',ids)).data||[];
+    }
+    return data.map(r=>({ id:'c_'+r.id, cloud:r.id, name:r.name, cat:BUILD_CATS.includes(r.cat)?r.cat:'Solo',
+      author:r.author, created:(r.created_at||'').slice(0,10), desc:r.descr||'',
+      chassis:MODIX[r.chassis]?r.chassis:null, cx:r.cx|0, cy:r.cy|0,
+      mods:(r.mods||[]).filter(p=>MODIX[p.m]),
+      ratings:rat.filter(x=>x.build_id===r.id).map(x=>x.stars),
+      comments:com.filter(x=>x.build_id===r.id).map(x=>({by:x.author,at:(x.created_at||'').slice(0,10),tx:x.body})) }));
+  }catch(e){ toast('Could not load community builds'); return []; }
+}
+async function publishCurrent(){
+  if(!cloudOn()){ toast('Community backend not configured yet — see About'); return; }
+  if(!sbUser){ openAuth(); return; }
+  const inp=document.getElementById('b-name');
+  cur.name=((inp&&inp.value)||cur.name||'').trim();
+  if(!cur.name){ renameBp(); if(!cur.name)return; }
+  const s=computeStats(cur), conn=connectivity(cur), inval=validateAll(cur);
+  if(!(cur.chassis&&s.reactors===1&&s.steering===1&&s.captain===1&&s.entrance>=1&&inval.size===0)){
+    toast('Only legal builds can be published — check Core components & Reliability'); return; }
+  const rec={ owner:sbUser.id, author:uname(), name:cur.name, cat:cur.cat, descr:cur.desc||'',
+    chassis:cur.chassis, cx:cur.cx, cy:cur.cy, mods:cur.mods };
+  const {error}=await sb.from('builds').insert(rec);
+  if(error){ toast('Publish failed: '+(error.message||'')); return; }
+  toast('Published to the community ✔'); srcMode='community'; showPage('browse');
+}
+function findBuild(id){ return builds.find(x=>x.id===id)||cloudBuilds.find(x=>x.id===id); }
+function renderSrcChips(){
+  const el=document.getElementById('src-chips'); if(!el)return;
+  const mk=(k,lb)=>`<button class="chip ${srcMode===k?'active':''}" onclick="srcMode='${k}';renderBrowse()">${lb}</button>`;
+  el.innerHTML=(cloudOn()? mk('community','🌐 Community')+mk('local','💾 My builds') : mk('local','💾 My builds'));
+  const note=document.getElementById('cloud-note');
+  if(note)note.innerHTML=cloudOn()?'' :
+    '<div class="cloud-note">Running in <b>local mode</b>: builds, ratings and comments stay in your browser. Share builds with the <b>TRMP1.</b> codes. (Site owner: connect Supabase to enable accounts &amp; community uploads — see About.)</div>';
+}
+
+/* ============================= INIT (v2 iso) ============================= */
+loadBuilds();
+renderPalTabs(); renderPalette(); syncBuildBar();
+sbInit();
+(function renderLegend(){ const el=document.getElementById('legend'); if(!el)return;
+  el.innerHTML=Object.keys(CAT_LABEL).map(k=>`<span class="lg"><i style="background:${CAT_COLORS[k]}"></i>${CAT_LABEL[k]}</span>`).join(''); })();
+if(location.hash.startsWith('#b=')){
+  try{ const b=decodeBuild(decodeURIComponent(location.hash.slice(3))); builds.unshift(b); persist(); openDetail(b.id); }catch(e){}
+}
+renderBrowse();
+
+</script>
+</body>
+</html>
